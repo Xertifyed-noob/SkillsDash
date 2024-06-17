@@ -1,0 +1,8 @@
+# Root requirements.txt
+
+# Backend requirements
+Flask
+Flask-SQLAlchemy
+pandas
+
+# Frontend requirements
