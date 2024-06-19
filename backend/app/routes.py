@@ -3,6 +3,7 @@ from .models import Skill, Tool, Education
 
 main = Blueprint('main', __name__)
 
+# Define view handlers to query records from the respective databases and return in JSON format
 @main.route('/skills', methods=['GET'])
 def get_skills():
     skills = Skill.query.all()
