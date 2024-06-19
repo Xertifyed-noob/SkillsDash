@@ -4,5 +4,7 @@
 Flask
 Flask-SQLAlchemy
 pandas
+python-dotenv
+pymysql
 
 # Frontend requirements

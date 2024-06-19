@@ -24,3 +24,12 @@ yarn-error.log*
 
 # Cache files
 frontend/node_modules/.cache/
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+
+# Environment variable files
+.env
