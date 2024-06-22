@@ -3,6 +3,7 @@
 # Backend requirements
 Flask
 Flask-SQLAlchemy
+flask-migrate
 pandas
 python-dotenv
 pymysql

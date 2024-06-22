@@ -1,8 +1,8 @@
 import pandas as pd
-from app.database import db
+from app import db
 from app.models import Skill, Tool, Education
 
-
+# For loading dataset into the MySQL database
 def load_data():
     data = pd.read_csv("../datasets/Transformed_data.csv")
     
