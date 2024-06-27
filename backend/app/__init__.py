@@ -18,10 +18,6 @@ def create_app():
     db.init_app(app)  # Initialize SQLAlchemy with the app
     migrate.init_app(app, db)  # Initialize Flask-Migrate with the app and SQLAlchemy
 
-    with app.app_context():
-        from .database import init_db
-        init_db(app) # Initialise database
-
     from .routes import main
     app.register_blueprint(main)
 

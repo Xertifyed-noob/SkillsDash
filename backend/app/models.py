@@ -1,44 +1,47 @@
 from . import db
 
-# Defining the schema of the relational database models
+# Defining the schema of the relational database models in MySQL
+# Table of skills counts across job titles
 class Skill(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
+    skill = db.Column(db.String(80), nullable=False)
     count = db.Column(db.Integer, default=0)
     job_title = db.Column(db.String(80), nullable=False)
 
     def to_dict(self):
         return {
             'id': self.id,
-            'name': self.name,
+            'skill': self.skill,
             'count': self.count,
             'job_title': self.job_title
         }
 
+# Table of tools counts across job titles
 class Tool(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
+    tool = db.Column(db.String(80), nullable=False)
     count = db.Column(db.Integer, default=0)
     job_title = db.Column(db.String(80), nullable=False)
 
     def to_dict(self):
         return {
             'id': self.id,
-            'name': self.name,
+            'tool': self.tool,
             'count': self.count,
             'job_title': self.job_title
         }
 
+# Table of education level counts across job titles
 class Education(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    level = db.Column(db.String(80), nullable=False)
+    education = db.Column(db.String(80), nullable=False)
     count = db.Column(db.Integer, default=0)
     job_title = db.Column(db.String(80), nullable=False)
 
     def to_dict(self):
         return {
             'id': self.id,
-            'level': self.level,
+            'education': self.education,
             'count': self.count,
             'job_title': self.job_title
         }
