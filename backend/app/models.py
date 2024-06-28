@@ -5,14 +5,12 @@ from . import db
 class Skill(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     skill = db.Column(db.String(80), nullable=False)
-    count = db.Column(db.Integer, default=0)
     job_title = db.Column(db.String(80), nullable=False)
 
     def to_dict(self):
         return {
             'id': self.id,
             'skill': self.skill,
-            'count': self.count,
             'job_title': self.job_title
         }
 
@@ -20,14 +18,12 @@ class Skill(db.Model):
 class Tool(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tool = db.Column(db.String(80), nullable=False)
-    count = db.Column(db.Integer, default=0)
     job_title = db.Column(db.String(80), nullable=False)
 
     def to_dict(self):
         return {
             'id': self.id,
             'tool': self.tool,
-            'count': self.count,
             'job_title': self.job_title
         }
 
@@ -35,13 +31,11 @@ class Tool(db.Model):
 class Education(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     education = db.Column(db.String(80), nullable=False)
-    count = db.Column(db.Integer, default=0)
     job_title = db.Column(db.String(80), nullable=False)
 
     def to_dict(self):
         return {
             'id': self.id,
             'education': self.education,
-            'count': self.count,
             'job_title': self.job_title
         }

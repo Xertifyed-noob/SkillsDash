@@ -1,6 +1,6 @@
 from . import create_app
-from .fill_tables import fill_tables
 from .database import init_db
+from .populate_db import populate_db
 
 app = create_app()
 
@@ -8,7 +8,7 @@ app = create_app()
 def initialize_database(): 
     with app.app_context():
         init_db(app)
-        fill_tables()
+        populate_db()
 
 if __name__ == "__main__":
     initialize_database()
