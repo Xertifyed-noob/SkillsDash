@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from .models import Skill, Tool, Education
 
+# Creates 'main' blueprint for organising routes
 main = Blueprint('main', __name__)
 
 # Define view handlers to query records from the respective databases and return in JSON format

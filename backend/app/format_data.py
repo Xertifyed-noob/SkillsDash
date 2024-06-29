@@ -1,19 +1,25 @@
 import pandas as pd
 
+# Function to sequentially process skills, tools and education columns
 def format_data(data, column_name):
-    # Remove duplicates
-    df = data[['Job Title', column_name]].dropna().copy()
+    items_list = []
+    # Sequentially iterate over the rows in the dataset
+    for _, row in data.iterrows():
+        job_title = row['Job Title']
+        items = row[column_name]
+        # If there are items under the columns
+        if pd.notna(items):
+            # Process each item (skill, tool, education) individually
+            items_split = items.split(',')
+            for item in items_split:
+                # Append the dictionary containing the job title and item pairing to item list
+                items_list.append({'job_title': job_title, column_name.lower(): item.strip()})
 
-    # Explode the column separately
-    exploded = df[column_name].str.split(',').explode().str.strip().reset_index(drop=True)
-    job_titles = df['Job Title'].repeat(df[column_name].str.split(',').apply(len)).reset_index(drop=True)
+    formatted_data = pd.DataFrame(items_list)
+    # print(f"Formatted data for column {column_name}:\n", formatted_data.head(10)) [DEBUGGING]
+    return formatted_data
 
-    # Create a new DataFrame with exploded data
-    df_exploded = pd.DataFrame({'Job Title': job_titles, column_name: exploded})
-    df_exploded = df_exploded.drop_duplicates(subset=['Job Title', column_name])
-
-    return df_exploded
-
+# Function to load dataset and then format the columns in the dataset 
 def load_and_format_data(file_path):
     data = pd.read_csv(file_path)
     
