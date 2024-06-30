@@ -1,6 +1,7 @@
 from . import create_app
 from .database import init_db
 from .populate_db import populate_db
+from app.data_analysis import aggregate_data
 
 # Create and configure flask app
 app = create_app()
@@ -10,6 +11,12 @@ def initialize_database():
     with app.app_context():
         init_db(app)
         populate_db()
+        skill_counts, tool_counts, education_counts, summary_stats = aggregate_data()
+        # print(skill_counts) [DEBUGGING]
+        # print(tool_counts) [DEBUGGING]
+        # print(education_counts) [DEBUGGING]
+        # print(summary_stats) [DEBUGGING]
+
 
 # Run flask app 
 if __name__ == "__main__":
