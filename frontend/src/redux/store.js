@@ -1,4 +1,4 @@
-import configureStore from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 import rootReducer from './reducers';
 
 // Configure redux store with root reducer and default middleware
