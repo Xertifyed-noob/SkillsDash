@@ -11,7 +11,8 @@ import { Grid, Container } from '@mui/material';
 
 const Dashboard = () => {
     const dispatch = useDispatch();
-    const { data, jobTitles } = useSelector(state => state);
+    const data = useSelector(state => state.data);  
+    const jobTitles = useSelector(state => state.jobTitles); 
 
     const [selectedJob, setSelectedJob] = useState('');
 
