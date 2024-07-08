@@ -1,10 +1,10 @@
 // Intitial state of redux store
 const initialState = {
     data: {
-        skills: {},
-        tools: {},
-        education: {},
-        summaryStats: ''
+        skills: [],
+        tools: [],
+        education: [],
+        summaryStats: {}
     },
     jobTitles: []
 };
@@ -16,7 +16,12 @@ const rootReducer = (state = initialState, action) => {
         case 'FETCH_DATA':
             return {
                 ...state,
-                data: action.payload
+                data: {
+                    skills: action.payload.skills || [],
+                    tools: action.payload.tools || [],
+                    education: action.payload.education || [],
+                    summaryStats: action.payload.summaryStats || {}
+                }
             };
         // Else returns the current unchanged state
         default:
