@@ -2,9 +2,13 @@ from . import create_app
 from .database import init_db
 from .populate_db import populate_db
 from app.data_analysis import aggregate_data
+from flask_cors import CORS
 
 # Create and configure flask app
 app = create_app()
+
+# Enable CORS for all routes
+CORS(app)
 
 # Activate application context, initialise and populate MySQL database 
 def initialize_database(): 

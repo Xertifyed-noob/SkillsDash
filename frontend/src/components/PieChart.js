@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 
-const PieChart = () => {
+const PieChart = memo(() => {
     return (
         <div>
             PieChart 
         </div>
     );
-};
+});
 
 export default PieChart;

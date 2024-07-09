@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { fetchData } from '../redux/actions'
 import BarChart from './BarChart';
 import HeatMap from './HeatMap';
@@ -11,18 +11,19 @@ import { Grid, Container } from '@mui/material';
 
 const Dashboard = () => {
     const dispatch = useDispatch();
-    const data = useSelector(state => state.data);  
-    const jobTitles = useSelector(state => state.jobTitles); 
+    const data = useSelector(state => state.data, shallowEqual);  
 
-    const [selectedJob, setSelectedJob] = useState('');
-
+    // Directly fetch data for default job title on component mount
     useEffect(() => {
-        dispatch(fetchData(selectedJob));
-    }, [dispatch, selectedJob]);
+        console.log('Fetching data for default job title');
+        dispatch(fetchData('Data Analyst'));
+    }, [dispatch]);
+
+    console.log('Dashboard Data:', data);
 
     return (
         <Container>
-            <JobFilter jobtitles={jobTitles} selectedJob={selectedJob} onChange={setSelectedJob} />
+            <JobFilter jobtitles={[]} selectedJob={'Data Analyst'} onChange={() => {}} />
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <SummaryStats stats={data.summaryStats} />
@@ -44,4 +45,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default React.memo(Dashboard);

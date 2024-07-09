@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 
-const SummaryStats = () => {
+const SummaryStats = memo(() => {
     return (
         <div>
             SummaryStats
         </div>
     );
-};
+});
 
 export default SummaryStats;
