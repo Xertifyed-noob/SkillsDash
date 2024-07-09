@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { fetchData } from '../redux/actions'
 import BarChart from './BarChart';
 import HeatMap from './HeatMap';
@@ -11,7 +11,7 @@ import { Grid, Container } from '@mui/material';
 
 const Dashboard = () => {
     const dispatch = useDispatch();
-    const data = useSelector(state => state.data);  
+    const data = useSelector(state => state.data, shallowEqual);  
 
     // Directly fetch data for default job title on component mount
     useEffect(() => {
@@ -45,4 +45,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default React.memo(Dashboard);

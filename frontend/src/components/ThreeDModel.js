@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 
-const ThreeDModel = () => {
+const ThreeDModel = memo(() => {
     return (
         <div>
             ThreeDModel
         </div>
     );
-};
+});
 
 export default ThreeDModel;

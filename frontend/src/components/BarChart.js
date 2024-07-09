@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Bar } from 'react-chartjs-2'
 
-const BarChart = ({ data }) => {
+const BarChart = memo(({ data }) => {
 
     console.log('BarChart Data:', data); 
 
@@ -92,6 +92,6 @@ const BarChart = ({ data }) => {
     };
 
     return <Bar data={chartData} options={options}/>;
-};
+});
 
 export default BarChart;
