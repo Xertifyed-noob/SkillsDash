@@ -1,6 +1,6 @@
 import pandas as pd
 
-# Function to sequentially process skills, tools and education columns
+# Function to sequentially process skills, tools, education level, and field od study columns
 def format_data(data, column_name):
     items_list = []
     # Sequentially iterate over the rows in the dataset
@@ -9,7 +9,7 @@ def format_data(data, column_name):
         items = row[column_name]
         # If there are items under the columns
         if pd.notna(items):
-            # Process each item (skill, tool, education) individually
+            # Process each item (skill, tool, education level, field of study) individually
             items_split = items.split(',')
             for item in items_split:
                 # Append the dictionary containing the job title and item pairing to item list
@@ -25,6 +25,7 @@ def load_and_format_data(file_path):
     
     skills = format_data(data, 'Skills')
     tools = format_data(data, 'Tools')
-    education = format_data(data, 'Education')
+    education_level = format_data(data, 'Education Level')
+    field_of_study = format_data(data, 'Field of Study')
     
-    return skills, tools, education
+    return skills, tools, education_level, field_of_study

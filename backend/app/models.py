@@ -27,15 +27,28 @@ class Tool(db.Model):
             'job_title': self.job_title
         }
 
-# Table to store education data
-class Education(db.Model):
+# Table to store education level data
+class EducationLevel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    education = db.Column(db.String(100), nullable=False)
+    education_level = db.Column(db.String(100), nullable=False)
     job_title = db.Column(db.String(100), nullable=False)
 
     def to_dict(self):
         return {
             'id': self.id,
-            'education': self.education,
+            'education_level': self.education_level,
+            'job_title': self.job_title
+        }
+    
+# Table to store field of study data
+class FieldOfStudy(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    field_of_study = db.Column(db.String(100), nullable=False)
+    job_title = db.Column(db.String(100), nullable=False)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'field_of_study': self.field_of_study,
             'job_title': self.job_title
         }

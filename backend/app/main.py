@@ -15,7 +15,7 @@ def initialize_database():
     with app.app_context():
         init_db(app)
         populate_db()
-        skill_counts, tool_counts, education_counts, summary_stats = aggregate_data()
+        skill_counts, tool_counts, education_level_counts, field_of_study_counts, summary_stats = aggregate_data()
         # print(skill_counts) [DEBUGGING]
         # print(tool_counts) [DEBUGGING]
         # print(education_counts) [DEBUGGING]

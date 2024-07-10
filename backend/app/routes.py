@@ -10,21 +10,27 @@ DEFAULT_JOB_TITLE = 'Data Analyst'
 @main.route('/aggregated/skills', methods=['GET'])
 def get_aggregated_skills():
     job_title = request.args.get('job_title', DEFAULT_JOB_TITLE)
-    skill_counts, _, _, _ = aggregate_data(job_title)
+    skill_counts, _, _, _, _ = aggregate_data(job_title)
     return jsonify(skill_counts.to_dict(orient='records'))
 
 @main.route('/aggregated/tools', methods=['GET'])
 def get_aggregated_tools():
     job_title = request.args.get('job_title', DEFAULT_JOB_TITLE)
-    _, tool_counts, _, _ = aggregate_data(job_title)
+    _, tool_counts, _, _, _ = aggregate_data(job_title)
     return jsonify(tool_counts.to_dict(orient='records'))
 
-
-@main.route('/aggregated/education', methods=['GET'])
-def get_aggregated_education():
+@main.route('/aggregated/education-level', methods=['GET'])
+def get_aggregated_education_level():
     job_title = request.args.get('job_title', DEFAULT_JOB_TITLE)
-    _, _, education_counts, _ = aggregate_data(job_title)
-    return jsonify(education_counts.to_dict(orient='records'))
+    _, _, education_level_counts, _, _ = aggregate_data(job_title)
+    return jsonify(education_level_counts.to_dict(orient='records'))
+
+@main.route('/aggregated/field-of-study', methods=['GET'])
+def get_aggregated_field_of_study():
+    education_level = request.args.get('education_level')
+    job_title = request.args.get('job_title', DEFAULT_JOB_TITLE)
+    _, _, _, field_of_study_counts, _ = aggregate_data(job_title, education_level=education_level)
+    return jsonify(field_of_study_counts.to_dict(orient='records'))
 
 @main.route('/aggregated/summary', methods=['GET'])
 def get_summary_stats():
