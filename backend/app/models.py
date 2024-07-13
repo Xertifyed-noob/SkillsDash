@@ -32,6 +32,7 @@ class EducationLevel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     education_level = db.Column(db.String(100), nullable=False)
     job_title = db.Column(db.String(100), nullable=False)
+    fields_of_study = db.relationship('FieldOfStudy', backref='education_level', lazy=True)
 
     def to_dict(self):
         return {
@@ -45,10 +46,12 @@ class FieldOfStudy(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     field_of_study = db.Column(db.String(100), nullable=False)
     job_title = db.Column(db.String(100), nullable=False)
+    education_level_id = db.Column(db.Integer, db.ForeignKey('education_level.id'), nullable=False)
 
     def to_dict(self):
         return {
             'id': self.id,
             'field_of_study': self.field_of_study,
-            'job_title': self.job_title
+            'job_title': self.job_title,
+            'education_level_id': self.education_level_id
         }
