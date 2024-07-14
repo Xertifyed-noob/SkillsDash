@@ -27,13 +27,12 @@ def get_aggregated_education_level():
 
 @main.route('/aggregated/field-of-study', methods=['GET'])
 def get_aggregated_field_of_study():
-    education_level = request.args.get('education_level')
     job_title = request.args.get('job_title', DEFAULT_JOB_TITLE)
-    _, _, _, field_of_study_counts, _ = aggregate_data(job_title, education_level=education_level)
+    _, _, _, field_of_study_counts, _ = aggregate_data(job_title)
     return jsonify(field_of_study_counts.to_dict(orient='records'))
 
 @main.route('/aggregated/summary', methods=['GET'])
 def get_summary_stats():
     job_title = request.args.get('job_title', DEFAULT_JOB_TITLE)
-    _, _, _, summary_stats = aggregate_data(job_title)
+    _, _, _, _, summary_stats = aggregate_data(job_title)
     return jsonify(summary_stats)
