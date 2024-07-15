@@ -13,11 +13,12 @@ const initialState = {
 // Root reducer which handles different action types
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
-        // Copies existing state and updates data of copied state with action payload
+        // Copies existing state and updates data of copied state with data from action payload
         case 'FETCH_DATA':
-            // Ensures state is only updated when there is a difference between current state and new data
+            // Ensures state is only updated when there is a difference between current state data and new data
             if (JSON.stringify(state.data) !== JSON.stringify(action.payload)) {
                 console.log('FETCH_DATA action payload:', action.payload);
+                // Returns the new state with the updated data from the action payload
                 return {
                     ...state,
                     data: {
@@ -30,7 +31,7 @@ const rootReducer = (state = initialState, action) => {
                 };
             }
             return state;
-        // Else returns the current unchanged state
+        // Else if the current state data is the same as the new data, returns the current unchanged state
         default:
             return state;
     }

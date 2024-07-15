@@ -3,14 +3,13 @@ import { Bar } from 'react-chartjs-2'
 
 const BarChart = memo(({ data }) => {
 
+    // Data should be an array of skills data (data.skills in Dashboard.js)
     console.log('BarChart Data:', data); 
 
     // Sort the data by count and take the top 10 skills
     const sortedData = data.slice().sort((a, b) => b.count - a.count).slice(0, 10);
-
     // Calculate total count to compute proportions
     const totalCount = data.reduce((sum, item) => sum + item.count, 0);
-
     // Extract labels (skills) and data (proportions) for the top 10 skills
     const labels = sortedData.map(item => item.skill);
     const proportions = sortedData.map(item => (item.count / totalCount) * 100);

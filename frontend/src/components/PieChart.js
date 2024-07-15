@@ -1,33 +1,29 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo } from 'react';
 import { Pie } from 'react-chartjs-2';
 
 const PieChart = memo(({ data }) => {
-    const [chartData, setChartData] = useState({});
 
-    useEffect(() => {
-        console.log('PieChart Data:', data);
+    // Data should be an array of education level data (data.education_levels in Dashboard.js)
+    console.log('PieChart Data:', data);
 
-        // Calculate total count of all the education level items 
-        const total = data.reduce((sum, item) => sum + item.count, 0);
+    // Calculate total count of all the education level items 
+    const total = data.reduce((sum, item) => sum + item.count, 0);
+    // Extract the education level lables from data
+    const labels = data.map(item => item.education_level);
+    // Calculares the percentage of each education
+    const percentages = data.map(item => (item.count / total) * 100);
 
-        // Extract the education level lables from data
-        const labels = data.map(item => item.education_level);
-
-        // Calculares the percentage of each education
-        const percentages = data.map(item => (item.count / total) * 100);
-
-        setChartData({
-            labels: labels,
-            datasets: [
-                {
-                    label: 'Education Levels',
-                    data: percentages,
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-                    hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-                }
-            ]
-        });
-    }, [data]);
+    const chartData = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Education Levels',
+                data: percentages,
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+            }
+        ]
+    };
 
     const options = {
         responsive: true,
@@ -59,15 +55,7 @@ const PieChart = memo(({ data }) => {
         }
     };
 
-    return (
-        <div>
-            {chartData.labels && chartData.labels.length > 0 ? (
-                <Pie data={chartData} options={options} />
-            ) : (
-                <p>No data available for the pie chart</p>
-            )}
-        </div>
-    );
+    return <Pie data={chartData} options={options} />;
 });
 
 export default PieChart;
