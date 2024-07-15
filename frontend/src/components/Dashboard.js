@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { fetchData } from '../redux/actions'
 import BarChart from './BarChart';
@@ -15,6 +15,8 @@ const Dashboard = () => {
     const dispatch = useDispatch();
     // Retrieves and selects the data state from the redux store (Initial state)
     const data = useSelector(state => state.data, shallowEqual);  
+    const [selectedEducationLevel, setSelectedEducationLevel] = useState('Bachelors');
+    const [selectedColor, setSelectedColor] = useState('#FF6384');
 
     // Fetches data, Dispatches action, and updates state in redux store upon component mount (Updated state)
     useEffect(() => {
@@ -24,6 +26,11 @@ const Dashboard = () => {
     }, [dispatch]);
 
     console.log('Dashboard Data:', data);
+
+    const handleSliceClick = (educationLevel, color) => {
+        setSelectedEducationLevel(educationLevel);
+        setSelectedColor(color);
+    };
 
     // Renders and passes data as props to sub-components
     return (
@@ -37,10 +44,10 @@ const Dashboard = () => {
                     <BarChart data={data.skills} />
                 </Grid>
                 <Grid item xs={6}>
-                    <PieChart data={data.education_levels} />
+                    <PieChart data={data.education_levels} onSliceClick={handleSliceClick}/>
                 </Grid>
                 <Grid item xs={6}>
-                    <HorizontalBarChart data={data.fields_of_study} /> 
+                    <HorizontalBarChart data={data.fields_of_study} selectedEducationLevel={selectedEducationLevel} selectedColor={selectedColor} /> 
                 </Grid>
                 <Grid item xs={6}>
                     <HeatMap data={data.tools} />

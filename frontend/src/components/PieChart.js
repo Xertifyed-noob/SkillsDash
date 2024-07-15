@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Pie } from 'react-chartjs-2';
 
-const PieChart = memo(({ data }) => {
+const PieChart = memo(({ data, onSliceClick }) => {
 
     // Data should be an array of education level data (data.education_levels in Dashboard.js)
     console.log('PieChart Data:', data);
@@ -52,6 +52,18 @@ const PieChart = memo(({ data }) => {
                     }
                 }
             }
+        },
+        onClick: (evt, activeElements) => {
+            if (activeElements.length > 0) {
+                const datasetIndex = activeElements[0].datasetIndex;
+                const index = activeElements[0].index;
+                const educationLevel = chartData.labels[index];
+                const color = chartData.datasets[datasetIndex].backgroundColor[index];
+                onSliceClick(educationLevel, color);
+            }
+        },
+        onHover: (event, chartElement) => {
+            event.native.target.style.cursor = chartElement.length ? 'pointer' : 'default';
         }
     };
 

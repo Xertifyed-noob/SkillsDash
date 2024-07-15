@@ -1,17 +1,16 @@
 import React, { memo } from 'react';
 import { Bar } from 'react-chartjs-2';
 
-const HorizontalBarChart = memo(({ data }) => {
+const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }) => {
     console.log('HorizontalBarChart Data:', data);
 
-    // Filter data (to be updated later)
-    const bachelorsData = data.filter(item => item.education_level === 'Bachelors');
+    // Filter data to only include the selected education level
+    const filteredData = data.filter(item => item.education_level === selectedEducationLevel);
 
+    // Calculate total count of all fields of study
+    const total = filteredData.reduce((sum, item) => sum + item.count, 0);
     // Sort the data by count and take the top 4 fields of study
-    const sortedData = bachelorsData.slice().sort((a, b) => b.count - a.count).slice(0, 4);
-
-    // Calculate total count to compute proportions
-    const total = sortedData.reduce((sum, item) => sum + item.count, 0);
+    const sortedData = filteredData.slice().sort((a, b) => b.count - a.count).slice(0, 4);
     // Extract labels (fields of study) and data (proportions)
     const labels = sortedData.map(item => item.field_of_study);
     const proportions = sortedData.map(item => (item.count / total) * 100);
@@ -22,14 +21,15 @@ const HorizontalBarChart = memo(({ data }) => {
             {
                 label: 'Fields of Study',
                 data: proportions,
-                backgroundColor: '#FF6384',
-                borderColor: '#FF6384',
+                backgroundColor: selectedColor,
+                borderColor: selectedColor,
             }
         ]
     };
 
     const options = {
-        indexAxis: 'y', // This makes the chart horizontal
+        // Makes the chart horizontal
+        indexAxis: 'y', 
         responsive: true,
         plugins: {
             legend: {
@@ -37,7 +37,7 @@ const HorizontalBarChart = memo(({ data }) => {
             },
             title: {
                 display: true,
-                text: 'Fields of Study Distribution for Degree',
+                text: `Top 4 fields of Study for ${selectedEducationLevel} Degree`,
                 color: '#000',
                 font: {
                     size: 16
