@@ -11,28 +11,39 @@ export const fetchData = (jobTitle) => async (dispatch) => {
             params: { job_title: jobTitle }
         });
 
-        console.log('Fetched Data:', skillsResponse.data); 
-
         const toolsResponse = await axios.get(`${BASE_URL}/tools`, {
             params: { job_title: jobTitle }
         });
-        const educationResponse = await axios.get(`${BASE_URL}/education`, {
+
+        const educationLevelsResponse = await axios.get(`${BASE_URL}/education-levels`, {
             params: { job_title: jobTitle }
         });
+
+        const fieldsOfStudyResponse = await axios.get(`${BASE_URL}/fields-of-study`, {
+            params: { job_title: jobTitle }
+        });
+
         const summaryResponse = await axios.get(`${BASE_URL}/summary`, {
             params: { job_title: jobTitle }
         });   
 
         const skillsData = skillsResponse.data || [];
         const toolsData = toolsResponse.data || [];
-        const educationData = educationResponse.data || [];
+        const educationLevelsData = educationLevelsResponse.data || [];
+        const fieldsOfStudyData = fieldsOfStudyResponse.data || []
         const summaryStatsData = summaryResponse.data || {};
+
+        console.log('Fetched Data:', {
+            skillsData,
+            educationLevelsData,
+        });
 
         // Use Immer to produce a new state based on the fetched data
         const data = produce({}, draft => {
             draft.skills = skillsData.map(item => ({ ...item }));
             draft.tools = toolsData.map(item => ({ ...item }));
-            draft.education = educationData.map(item => ({ ...item }));
+            draft.education_levels = educationLevelsData.map(item => ({ ...item }));
+            draft.fields_of_study = fieldsOfStudyData.map(item => ({ ...item }));
             draft.summaryStats = { ...summaryStatsData };
         });
 

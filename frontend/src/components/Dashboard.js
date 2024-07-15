@@ -32,7 +32,7 @@ const Dashboard = () => {
                     <BarChart data={data.skills} />
                 </Grid>
                 <Grid item xs={6}>
-                    <PieChart data={data.education} />
+                    <PieChart data={data.education_levels} />
                 </Grid>
                 <Grid item xs={12}>
                     <HeatMap data={data.tools} />

@@ -3,7 +3,8 @@ const initialState = {
     data: {
         skills: [],
         tools: [],
-        education: [],
+        education_levels: [],
+        fields_of_study: [],
         summaryStats: {}
     },
     jobTitles: []
@@ -22,7 +23,8 @@ const rootReducer = (state = initialState, action) => {
                     data: {
                         skills: action.payload.skills || [],
                         tools: action.payload.tools || [],
-                        education: action.payload.education || [],
+                        education_levels: action.payload.education_levels || [],
+                        fields_of_study: action.payload.fields_of_study || [],
                         summaryStats: action.payload.summaryStats || {}
                     }
                 };

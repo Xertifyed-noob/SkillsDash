@@ -19,13 +19,13 @@ def get_aggregated_tools():
     _, tool_counts, _, _, _ = aggregate_data(job_title)
     return jsonify(tool_counts.to_dict(orient='records'))
 
-@main.route('/aggregated/education-level', methods=['GET'])
+@main.route('/aggregated/education-levels', methods=['GET'])
 def get_aggregated_education_level():
     job_title = request.args.get('job_title', DEFAULT_JOB_TITLE)
     _, _, education_level_counts, _, _ = aggregate_data(job_title)
     return jsonify(education_level_counts.to_dict(orient='records'))
 
-@main.route('/aggregated/field-of-study', methods=['GET'])
+@main.route('/aggregated/fields-of-study', methods=['GET'])
 def get_aggregated_field_of_study():
     job_title = request.args.get('job_title', DEFAULT_JOB_TITLE)
     _, _, _, field_of_study_counts, _ = aggregate_data(job_title)
