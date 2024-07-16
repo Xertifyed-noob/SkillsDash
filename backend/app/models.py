@@ -1,17 +1,31 @@
 from . import db
 
 # Define the schema of the relational database models in MySQL
-# Table to store skills data
-class Skill(db.Model):
+
+# Table to store job data
+class Job(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    skill = db.Column(db.String(100), nullable=False)
     job_title = db.Column(db.String(100), nullable=False)
 
     def to_dict(self):
         return {
             'id': self.id,
+            'job_title': self.job_title,
+        }
+    
+# Table to store skills data
+class Skill(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    skill = db.Column(db.String(100), nullable=False)
+    job_title = db.Column(db.String(100), nullable=False)
+    job_id = db.Column(db.Integer, db.ForeignKey('job.id'), nullable=False)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
             'skill': self.skill,
-            'job_title': self.job_title
+            'job_title': self.job_title,
+            'job_id': self.job_id
         }
 
 # Table to store tools data
@@ -19,12 +33,14 @@ class Tool(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tool = db.Column(db.String(100), nullable=False)
     job_title = db.Column(db.String(100), nullable=False)
+    job_id = db.Column(db.Integer, db.ForeignKey('job.id'), nullable=False)
 
     def to_dict(self):
         return {
             'id': self.id,
             'tool': self.tool,
-            'job_title': self.job_title
+            'job_title': self.job_title,
+            'job_id': self.job_id
         }
 
 # Table to store education level data

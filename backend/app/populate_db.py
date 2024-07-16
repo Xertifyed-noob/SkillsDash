@@ -1,24 +1,30 @@
 import pandas as pd
 from app import db
-from app.models import Skill, Tool, EducationLevel, FieldOfStudy
+from app.models import Job, Skill, Tool, EducationLevel, FieldOfStudy
 from .format_data import load_and_format_data
 from sqlalchemy.sql import text
 
 # Function to insert dataframes created in format_data.py into the MySQL database
 def populate_db():
-    skills, tools, education_level, field_of_study = load_and_format_data("../datasets/processed/Transformed_data.csv")
+    jobs, skills, tools, education_level, field_of_study = load_and_format_data("../datasets/processed/Transformed_data.csv")
 
-    # Clear existing data from MySQL tables
+    # Clear existing data from MySQL tables (delete rows from dependent tables which has foreign keys first)
+    db.session.query(FieldOfStudy).delete()
     db.session.query(Skill).delete()
     db.session.query(Tool).delete()
     db.session.query(EducationLevel).delete()
-    db.session.query(FieldOfStudy).delete()
+    db.session.query(Job).delete()
 
     # Reset index to start from 1 
+    db.session.execute(text('ALTER TABLE job AUTO_INCREMENT = 1'))
     db.session.execute(text('ALTER TABLE skill AUTO_INCREMENT = 1'))
     db.session.execute(text('ALTER TABLE tool AUTO_INCREMENT = 1'))
     db.session.execute(text('ALTER TABLE education_level AUTO_INCREMENT = 1'))
     db.session.execute(text('ALTER TABLE field_of_study AUTO_INCREMENT = 1'))
+
+    # Insert jobs into the job table
+    jobs_list = jobs.to_dict(orient='records')
+    db.session.bulk_insert_mappings(Job, jobs_list)
 
     # Convert skills dataframe into dictionary and then insert them into MySQL table
     skills_list = skills.rename(columns={'skills': 'skill'}).to_dict(orient='records')
