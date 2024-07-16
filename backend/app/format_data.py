@@ -39,7 +39,7 @@ def format_data(data, column_name, jobs=None):
                 items_list.append(item_dict)
 
     formatted_data = pd.DataFrame(items_list)
-    print(f"Formatted data for column {column_name}:\n", formatted_data.head(20)) 
+    # print(f"Formatted data for column {column_name}:\n", formatted_data.head(20)) [DEBUGGING]
     return formatted_data
 
 
