@@ -16,7 +16,7 @@ def aggregate_query(model, column, job_title=None):
 
 # Function to further aggregate tool column to include the counts of their appearances alongside any of the top skills
 def aggregate_tools(job_title=None):
-    top_skills = get_top_skills()
+    top_skills = get_top_skills(job_title)
     # Aggregate the tool column and return a data frame of tool counts
     tool_counts = aggregate_query(Tool, Tool.tool, job_title)
     tool_counts['co_appearance'] = 0
@@ -25,7 +25,7 @@ def aggregate_tools(job_title=None):
         # Use a set to track job IDs that have already been counted for this tool
         counted_job_ids = set()
         for skill in top_skills:
-            # Query to count the number of times the tool appears alongside the current skill
+            # Query to count the number of times the tool appears alongside the current skill (number of unique job IDs)
             query = db.session.query(Tool.job_id).join(Skill, Skill.job_id == Tool.job_id).filter(Tool.tool == tool, Skill.skill == skill)
             # Job title filtering
             if job_title:
@@ -34,20 +34,24 @@ def aggregate_tools(job_title=None):
             # Ensures that each job ID is counted only once
             for row in result:
                 counted_job_ids.add(row[0])
-        # The size of the set is the number of unique job_ids where the tool co-appears with any of the top skills
+        # The size of the set is the number of unique job IDs where the tool co-appears with any of the top skills
         tool_counts.loc[tool_counts['tool'] == tool, 'co_appearance'] = len(counted_job_ids)
 
     return tool_counts
 
 
-# Function to query the top 3 skills from the Skill table in MySQL database
-def get_top_skills(n=3):
-    # Count the occurence of each unique skill
-    top_skills_query = db.session.query(
+# Function to query the top 3 skills from the Skill table in MySQL database [Originally used for BubbleChart.js but changed]
+def get_top_skills(job_title=None, n=3):
+    # Base query to count the occurence of each unique skill
+    query = db.session.query(
         Skill.skill,
         db.func.count(Skill.skill).label('count')
-    # Sort in descending order and limit the query result to the top 3 skills with the most counts
-    ).group_by(Skill.skill).order_by(db.desc('count')).limit(n).all()
+    ).group_by(Skill.skill)
+    # Job title filtering
+    if job_title:
+        query = query.filter(Skill.job_title == job_title)
+    # Sort in descending order and limit the query result to the top n skills with the most counts
+    top_skills_query = query.order_by(db.desc('count')).limit(n).all()
     # Extract the skill names from the query result
     top_skills = [skill[0] for skill in top_skills_query]
     return top_skills

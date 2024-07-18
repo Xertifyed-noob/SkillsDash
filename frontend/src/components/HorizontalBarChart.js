@@ -37,7 +37,7 @@ const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }
             },
             title: {
                 display: true,
-                text: `Top 4 fields of Study for ${selectedEducationLevel} Degree`,
+                text: `Top fields of Study for ${selectedEducationLevel} Degree`,
                 color: '#000',
                 font: {
                     size: 16

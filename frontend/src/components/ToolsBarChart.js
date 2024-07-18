@@ -1,27 +1,27 @@
 import React, { memo } from 'react';
-import { Bar } from 'react-chartjs-2'
+import { Bar } from 'react-chartjs-2';
 
-const BarChart = memo(({ data }) => {
+const ToolsBarChart = memo(({ data }) => {
 
-    // Data should be an array of skills data (data.skills in Dashboard.js)
-    console.log('BarChart Data:', data); 
+    // Data should be an array of tools data (data.tools in Dashboard.js)
+    console.log('ToolsBarChart Data:', data); 
 
-    // Sort the data by count and take the top 10 skills
-    const sortedData = data.slice().sort((a, b) => b.count - a.count).slice(0, 10);
+    // Sort the data by count and take the top 10 tools
+    const sortedData = data.slice().sort((a, b) => b.count - a.count).slice(0, 9);
     // Calculate total count to compute proportions
     const totalCount = data.reduce((sum, item) => sum + item.count, 0);
-    // Extract labels (skills) and data (proportions) for the top 10 skills
-    const labels = sortedData.map(item => item.skill);
+    // Extract labels (tools) and data (proportions) for the top 10 tools
+    const labels = sortedData.map(item => item.tool);
     const proportions = sortedData.map(item => (item.count / totalCount) * 100);
 
     const chartData = {
         labels: labels,
         datasets: [
             {
-                label: 'Skills',
+                label: 'Tools',
                 data: proportions,
-                backgroundColor: 'rgba(75,192,192,1)',
-                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(9, 195, 114, 1)',
+                borderColor: 'rgba(9, 195, 114, 1)',
             }
         ]
     };
@@ -34,7 +34,7 @@ const BarChart = memo(({ data }) => {
             },
             title: {
                 display: true,
-                text: 'Skills Distribution across roles',
+                text: 'Tools Distribution across roles',
                 color: '#000' 
             },
             tooltip: {
@@ -54,10 +54,10 @@ const BarChart = memo(({ data }) => {
             x: {
                 title: {
                     display: true,
-                    text: 'Skills',
+                    text: 'Tools',
                     color: '#000',
                     font: {
-                        size: 16
+                        size: 16,
                     }
                 },
                 ticks: {
@@ -90,7 +90,8 @@ const BarChart = memo(({ data }) => {
         }
     };
 
-    return <Bar data={chartData} options={options}/>;
+    return <Bar data={chartData} options={options} />;
 });
 
-export default BarChart;
+export default ToolsBarChart;
+

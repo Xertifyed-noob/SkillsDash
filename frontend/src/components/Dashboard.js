@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { fetchData } from '../redux/actions'
-import BarChart from './BarChart';
-import HeatMap from './HeatMap';
+import SkillsBarChart from './SkillsBarChart';
+import ToolsBarChart from './ToolsBarChart';
 import PieChart from './PieChart';
 import HorizontalBarChart from './HorizontalBarChart';
 import SummaryStats from './SummaryStats';
@@ -27,6 +27,7 @@ const Dashboard = () => {
 
     console.log('Dashboard Data:', data);
 
+    // For handling interactivity between pie chart and horizontal bar chart
     const handleSliceClick = (educationLevel, color) => {
         setSelectedEducationLevel(educationLevel);
         setSelectedColor(color);
@@ -41,16 +42,16 @@ const Dashboard = () => {
                     <SummaryStats stats={data.summaryStats} />
                 </Grid>
                 <Grid item xs={6}>
-                    <BarChart data={data.skills} />
+                    <SkillsBarChart data={data.skills} />
+                </Grid>
+                <Grid item xs={6}>
+                    <ToolsBarChart data={data.tools}/>
                 </Grid>
                 <Grid item xs={6}>
                     <PieChart data={data.education_levels} onSliceClick={handleSliceClick}/>
                 </Grid>
                 <Grid item xs={6}>
                     <HorizontalBarChart data={data.fields_of_study} selectedEducationLevel={selectedEducationLevel} selectedColor={selectedColor} /> 
-                </Grid>
-                <Grid item xs={6}>
-                    <HeatMap data={data.tools} />
                 </Grid>
                 <Grid item xs={6}>
                     <ThreeDModel />
