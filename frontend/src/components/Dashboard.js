@@ -17,6 +17,8 @@ const Dashboard = () => {
     const data = useSelector(state => state.data, shallowEqual);  
     const [selectedEducationLevel, setSelectedEducationLevel] = useState('Bachelors');
     const [selectedColor, setSelectedColor] = useState('#FF6384');
+    // For job title filtering
+    const [selectedJobTitle, setSelectedJobTitle] = useState('');
 
     // Fetches data, Dispatches action, and updates state in redux store upon component mount (Updated state)
     useEffect(() => {
@@ -24,6 +26,11 @@ const Dashboard = () => {
         // Ensures data fetching, action dispatch and state action effect happens only once via dependency array
         dispatch(fetchData('Data Analyst'));
     }, [dispatch]);
+
+    // For job title filtering
+    const handleJobTitleChange = (jobTitle) => {
+        setSelectedJobTitle(jobTitle);
+    };
 
     console.log('Dashboard Data:', data);
 
@@ -36,7 +43,6 @@ const Dashboard = () => {
     // Renders and passes data as props to sub-components
     return (
         <Container>
-            <JobFilter jobtitles={[]} selectedJob={'Data Analyst'} onChange={() => {}} />
             <Grid container spacing={3}> 
                 <Grid item xs={12}>
                     <SummaryStats stats={data.summaryStats} />
@@ -57,6 +63,7 @@ const Dashboard = () => {
                     <ThreeDModel />
                 </Grid>
             </Grid>
+            <JobFilter jobtitles={['Data Analyst', 'Data Scientist', 'Data Engineer']} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} />
         </Container>
     );
 };
