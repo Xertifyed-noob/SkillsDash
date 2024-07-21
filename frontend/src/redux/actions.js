@@ -7,25 +7,11 @@ const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/aggregated`;
 export const fetchData = (jobTitle) => async (dispatch) => {
     // Create GET HTTP requests to various API endpoints with job title as a query parameter
     try {
-        const skillsResponse = await axios.get(`${BASE_URL}/skills`, {
-            params: { job_title: jobTitle }
-        });
-
-        const toolsResponse = await axios.get(`${BASE_URL}/tools`, {
-            params: { job_title: jobTitle }
-        });
-
-        const educationLevelsResponse = await axios.get(`${BASE_URL}/education-levels`, {
-            params: { job_title: jobTitle }
-        });
-
-        const fieldsOfStudyResponse = await axios.get(`${BASE_URL}/fields-of-study`, {
-            params: { job_title: jobTitle }
-        });
-
-        const summaryResponse = await axios.get(`${BASE_URL}/summary`, {
-            params: { job_title: jobTitle }
-        });   
+        const skillsResponse = await axios.get(`${BASE_URL}/skills`, { params: { job_title: jobTitle }});
+        const toolsResponse = await axios.get(`${BASE_URL}/tools`, { params: { job_title: jobTitle }});
+        const educationLevelsResponse = await axios.get(`${BASE_URL}/education-levels`, { params: { job_title: jobTitle }});
+        const fieldsOfStudyResponse = await axios.get(`${BASE_URL}/fields-of-study`, { params: { job_title: jobTitle }});
+        const summaryResponse = await axios.get(`${BASE_URL}/summary`, { params: { job_title: jobTitle }});   
 
         // Accesses the data property of the responses, if response data is null or undefined, assign empty array
         const skillsData = skillsResponse.data || [];

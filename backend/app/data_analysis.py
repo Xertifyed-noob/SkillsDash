@@ -82,6 +82,9 @@ def count_distinct(model, column, job_title=None):
     return query.count()
 
 def calculate_summary_stats(data, job_title=None):
+    # Create a copy of the original data
+    data = data.copy()
+
     # Job title filtering
     if job_title:
         data = data[data['Job Title'] == job_title]
@@ -94,13 +97,16 @@ def calculate_summary_stats(data, job_title=None):
     data.loc[data['Rating'] == 'Unknown', 'Rating'] = pd.NA
     data.loc[data['Salary'] == 'Unknown', 'Salary'] = pd.NA
     # Clean the 'Salary' column to remove currency symbols ('$') in front of the data
-    data['Salary'] = data['Salary'].replace({'\$': ''}, regex=True)
+    data.loc[:, 'Salary'] = data['Salary'].replace({'\$': ''}, regex=True)
     # Convert 'Rating' and 'Salary' columns to numeric, converting errors to NaN
-    data['Rating'] = pd.to_numeric(data['Rating'], errors='coerce')
-    data['Salary'] = pd.to_numeric(data['Salary'], errors='coerce')
+    data.loc[:, 'Rating'] = pd.to_numeric(data['Rating'], errors='coerce')
+    data.loc[:, 'Salary'] = pd.to_numeric(data['Salary'], errors='coerce')
     # Calculate average rating and salary
     average_rating = data['Rating'].mean()
     average_salary = data['Salary'].mean()
+    # Round rating and salary
+    average_rating = round(average_rating, 1)
+    average_salary = round(average_salary, 2)
 
     summary_stats = {
         'total_job_listings': total_job_listings,

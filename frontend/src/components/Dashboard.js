@@ -37,7 +37,7 @@ const Dashboard = () => {
     return (
         <Container>
             <JobFilter jobtitles={[]} selectedJob={'Data Analyst'} onChange={() => {}} />
-            <Grid container spacing={3}>
+            <Grid container spacing={3}> 
                 <Grid item xs={12}>
                     <SummaryStats stats={data.summaryStats} />
                 </Grid>
