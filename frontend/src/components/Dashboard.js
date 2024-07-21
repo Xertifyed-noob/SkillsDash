@@ -22,10 +22,16 @@ const Dashboard = () => {
 
     // Fetches data, Dispatches action, and updates state in redux store upon component mount (Updated state)
     useEffect(() => {
-        console.log('Fetching data for default job title');
+        console.log('Fetching data');
         // Ensures data fetching, action dispatch and state action effect happens only once via dependency array
-        dispatch(fetchData('Data Analyst'));
-    }, [dispatch]);
+        dispatch(fetchData(selectedJobTitle));
+    }, [dispatch, selectedJobTitle]);
+
+    // For handling interactivity between pie chart and horizontal bar chart
+    const handleSliceClick = (educationLevel, color) => {
+        setSelectedEducationLevel(educationLevel);
+        setSelectedColor(color);
+    };
 
     // For job title filtering
     const handleJobTitleChange = (jobTitle) => {
@@ -33,12 +39,6 @@ const Dashboard = () => {
     };
 
     console.log('Dashboard Data:', data);
-
-    // For handling interactivity between pie chart and horizontal bar chart
-    const handleSliceClick = (educationLevel, color) => {
-        setSelectedEducationLevel(educationLevel);
-        setSelectedColor(color);
-    };
 
     // Renders and passes data as props to sub-components
     return (
