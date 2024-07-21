@@ -2,6 +2,7 @@ from . import create_app
 from .database import init_db
 from .populate_db import populate_db
 from app.data_analysis import aggregate_data
+from flask import current_app
 from flask_cors import CORS
 
 # Create and configure flask app
@@ -15,7 +16,8 @@ def initialize_database():
     with app.app_context():
         init_db(app)
         populate_db()
-        skill_counts, tool_counts, education_level_counts, field_of_study_counts, summary_stats = aggregate_data()
+        data = current_app.config['DATA']
+        skill_counts, tool_counts, education_level_counts, field_of_study_counts, summary_stats = aggregate_data(data)
         # print(skill_counts) [DEBUGGING]
         # print(tool_counts) [DEBUGGING]
         # print(education_counts) [DEBUGGING]

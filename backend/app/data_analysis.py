@@ -14,7 +14,7 @@ def aggregate_query(model, column, job_title=None):
     return pd.DataFrame(query, columns=[column.name, 'count'])
 
 
-# Function to further aggregate tool column to include the counts of their appearances alongside any of the top skills
+# Function to further aggregate tool column to include the counts of their appearances alongside any of the top skills [Originally used for BubbleChart.js]
 def aggregate_tools(job_title=None):
     top_skills = get_top_skills(job_title)
     # Aggregate the tool column and return a data frame of tool counts
@@ -40,7 +40,7 @@ def aggregate_tools(job_title=None):
     return tool_counts
 
 
-# Function to query the top 3 skills from the Skill table in MySQL database [Originally used for BubbleChart.js but changed]
+# Function to query the top 3 skills from the Skill table in MySQL database [Originally used for BubbleChart.js]
 def get_top_skills(job_title=None, n=3):
     # Base query to count the occurence of each unique skill
     query = db.session.query(
@@ -81,22 +81,44 @@ def count_distinct(model, column, job_title=None):
         query = query.filter(model.job_title == job_title)
     return query.count()
 
+def calculate_summary_stats(data, job_title=None):
+    # Job title filtering
+    if job_title:
+        data = data[data['Job Title'] == job_title]
+
+    # Calculate job listings and unique industries
+    total_job_listings = len(data)
+    total_industries = data['Sector'].nunique()
+
+    # Replace 'Unknown' with NaN in 'Rating' and 'Salary' columns
+    data.loc[data['Rating'] == 'Unknown', 'Rating'] = pd.NA
+    data.loc[data['Salary'] == 'Unknown', 'Salary'] = pd.NA
+    # Clean the 'Salary' column to remove currency symbols ('$') in front of the data
+    data['Salary'] = data['Salary'].replace({'\$': ''}, regex=True)
+    # Convert 'Rating' and 'Salary' columns to numeric, converting errors to NaN
+    data['Rating'] = pd.to_numeric(data['Rating'], errors='coerce')
+    data['Salary'] = pd.to_numeric(data['Salary'], errors='coerce')
+    # Calculate average rating and salary
+    average_rating = data['Rating'].mean()
+    average_salary = data['Salary'].mean()
+
+    summary_stats = {
+        'total_job_listings': total_job_listings,
+        'total_industries': total_industries,
+        'average_rating': average_rating,
+        'average_salary': average_salary
+    }
+
+    return summary_stats
+
 
 # Function to aggregate counts as well as compute summary statistics
-def aggregate_data(job_title=None, education_level=None):
+def aggregate_data(data, job_title=None, education_level=None):
     skill_counts = aggregate_query(Skill, Skill.skill, job_title)
     tool_counts = aggregate_tools(job_title)
     education_level_counts = aggregate_query(EducationLevel, EducationLevel.education_level, job_title)
     field_of_study_counts = aggregate_field_of_study(job_title)
-
-    # To be changed 
-    summary_stats = {
-        'total_jobs': count_distinct(Skill, Skill.job_title, job_title),
-        'total_skills': count_distinct(Skill, Skill.skill, job_title),
-        'total_tools': count_distinct(Tool, Tool.tool, job_title),
-        'total_education_levels': count_distinct(EducationLevel, EducationLevel.education_level, job_title),
-        'total_fields_of_study': count_distinct(FieldOfStudy, FieldOfStudy.field_of_study, job_title),
-    }
+    summary_stats = calculate_summary_stats(data, job_title)
 
     return skill_counts, tool_counts, education_level_counts, field_of_study_counts, summary_stats
 
