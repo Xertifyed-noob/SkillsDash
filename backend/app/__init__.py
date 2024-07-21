@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -13,6 +14,11 @@ def create_app():
     
     # Create flask app
     app = Flask(__name__)
+
+    # Load the dataset once and then access it whenever needed
+    dataset_path = '../datasets/processed/Transformed_data.csv'
+    app.config['DATA'] = pd.read_csv(dataset_path)
+
     # Set the database URI to MySQL
     app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{os.getenv('MYSQL_USERNAME')}:{os.getenv('MYSQL_PASSWORD')}@{os.getenv('MYSQL_HOST')}/{os.getenv('MYSQL_DB')}" 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

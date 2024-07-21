@@ -1,12 +1,17 @@
 import pandas as pd
+from flask import current_app
 from app import db
 from app.models import Job, Skill, Tool, EducationLevel, FieldOfStudy
-from .format_data import load_and_format_data
+from .format_data import format_dataset
 from sqlalchemy.sql import text
 
 # Function to insert dataframes created in format_data.py into the MySQL database
 def populate_db():
-    jobs, skills, tools, education_level, field_of_study = load_and_format_data("../datasets/processed/Transformed_data.csv")
+    # Load the dataset from the Flask app configuration
+    data = current_app.config['DATA']
+
+    # Format the dataset using function defined in format_data.py
+    jobs, skills, tools, education_level, field_of_study = format_dataset(data)
 
     # Clear existing data from MySQL tables (delete rows from dependent tables which has foreign keys first)
     db.session.query(FieldOfStudy).delete()
@@ -41,7 +46,7 @@ def populate_db():
     db.session.bulk_insert_mappings(EducationLevel, education_level_list)
 
     # Convert field of study dataframe into dictionary and then insert them into MySQL table
-    field_of_study_df = populate_field_of_study(field_of_study) 
+    field_of_study_df = populate_field_of_study(data, field_of_study) 
     field_of_study_list = field_of_study_df.to_dict(orient='records')
     db.session.bulk_insert_mappings(FieldOfStudy, field_of_study_list)
 
@@ -49,13 +54,9 @@ def populate_db():
 
 
 # Function to map education level to education level id in field of study dataframe
-def populate_field_of_study(field_of_study):
-    # Load the original dataset, remove all columns but keep 'Educational Level' and 'Field of Study' columns
-    data = pd.read_csv('../datasets/processed/Transformed_data.csv')
-    df = data.copy()
-    df = df[['Education Level', 'Field of Study']]
-    # Remove rows with no items under 'Education Level' column 
-    df = df.dropna(subset=['Education Level'])
+def populate_field_of_study(data, field_of_study):
+    # Keep only the 'Educational Level' and 'Field of Study' columns and remove rows with no items under 'Education Level' column 
+    df = data[['Education Level', 'Field of Study']].dropna(subset=['Education Level'])
 
     # Create a new 'Filled' column which indicates if the Field of Study column is filled or not
     df['Filled'] = df['Field of Study'].notna()

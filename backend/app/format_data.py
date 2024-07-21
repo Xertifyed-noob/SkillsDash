@@ -71,10 +71,8 @@ def format_field_of_study(data):
     return formatted_list
 
 
-# Function to load dataset and then format the columns in the dataset 
-def load_and_format_data(file_path):
-    data = pd.read_csv(file_path)
-    
+# Function to format selected columns in the dataset 
+def format_dataset(data):
     jobs = format_job(data)
     skills = format_data(data, 'Skills', jobs)
     tools = format_data(data, 'Tools', jobs)
