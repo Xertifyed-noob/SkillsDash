@@ -1,46 +1,30 @@
 import axios from 'axios';
 import { produce } from 'immer';
 
-const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/aggregated`;
+const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api/data`;
 
 // Action creator to fetch data from API endpoints of routes.py, based on job title
 export const fetchData = (jobTitle) => async (dispatch) => {
-    // Create GET HTTP requests to various API endpoints with job title as a query parameter
+    // Create GET HTTP requests the consolidated API endpoint with job title as a query parameter
     try {
-        const skillsResponse = await axios.get(`${BASE_URL}/skills`, { params: { job_title: jobTitle }});
-        const toolsResponse = await axios.get(`${BASE_URL}/tools`, { params: { job_title: jobTitle }});
-        const educationLevelsResponse = await axios.get(`${BASE_URL}/education-levels`, { params: { job_title: jobTitle }});
-        const fieldsOfStudyResponse = await axios.get(`${BASE_URL}/fields-of-study`, { params: { job_title: jobTitle }});
-        const summaryResponse = await axios.get(`${BASE_URL}/summary`, { params: { job_title: jobTitle }});   
+        const response = await axios.get(BASE_URL, { params: { job_title: jobTitle || '' } });
+        const data = response.data;
 
-        // Accesses the data property of the responses, if response data is null or undefined, assign empty array
-        const skillsData = skillsResponse.data || [];
-        const toolsData = toolsResponse.data || [];
-        const educationLevelsData = educationLevelsResponse.data || [];
-        const fieldsOfStudyData = fieldsOfStudyResponse.data || []
-        const summaryStatsData = summaryResponse.data || {};
-
-        console.log('Fetched Data:', {
-            skillsData,
-            toolsData,
-            educationLevelsData,
-            fieldsOfStudyData,
-            summaryStatsData
-        });
+        console.log('Fetched Data:', data);
 
         // Use Immer to create an immutable state update to produce a new state based on fetched data
-        const data = produce({}, draft => {
-            draft.skills = skillsData.map(item => ({ ...item }));
-            draft.tools = toolsData.map(item => ({ ...item }));
-            draft.education_levels = educationLevelsData.map(item => ({ ...item }));
-            draft.fields_of_study = fieldsOfStudyData.map(item => ({ ...item }));
-            draft.summaryStats = { ...summaryStatsData };
+        const processedData = produce({}, draft => {
+            draft.skills = data.skills.map(item => ({ ...item }));
+            draft.tools = data.tools.map(item => ({ ...item }));
+            draft.education_levels = data.education_levels.map(item => ({ ...item }));
+            draft.fields_of_study = data.fields_of_study.map(item => ({ ...item }));
+            draft.summaryStats = { ...data.summaryStats };
         });
 
-        console.log('Dispatching Data:', data);
+        console.log('Dispatching Data:', processedData);
 
         // Dispatch action with fetched data as payload
-        dispatch({ type: 'FETCH_DATA', payload: data });
+        dispatch({ type: 'FETCH_DATA', payload: processedData });
         
     }  catch (error) {
         console.error('Error fetching data:', error);

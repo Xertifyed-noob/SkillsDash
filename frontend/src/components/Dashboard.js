@@ -15,28 +15,35 @@ const Dashboard = () => {
     const dispatch = useDispatch();
     // Retrieves and selects the data state from the redux store (Initial state)
     const data = useSelector(state => state.data, shallowEqual);  
+    // Default selected education level is 'Bachelors'
     const [selectedEducationLevel, setSelectedEducationLevel] = useState('Bachelors');
     const [selectedColor, setSelectedColor] = useState('#FF6384');
+    // No spectific default selected job title initially
+    const [selectedJobTitle, setSelectedJobTitle] = useState('');
 
     // Fetches data, Dispatches action, and updates state in redux store upon component mount (Updated state)
     useEffect(() => {
-        console.log('Fetching data for default job title');
         // Ensures data fetching, action dispatch and state action effect happens only once via dependency array
-        dispatch(fetchData('Data Analyst'));
-    }, [dispatch]);
+        dispatch(fetchData(selectedJobTitle));
+    }, [dispatch, selectedJobTitle]);
 
-    console.log('Dashboard Data:', data);
-
-    // For handling interactivity between pie chart and horizontal bar chart
+    // For handling interactivity between PieChart.js and HorizontalBarChart.js
     const handleSliceClick = (educationLevel, color) => {
         setSelectedEducationLevel(educationLevel);
         setSelectedColor(color);
     };
 
+    // For job title filtering by JobFilter.js
+    const handleJobTitleChange = (jobTitle) => {
+        console.log('Selected job title:', jobTitle);
+        setSelectedJobTitle(jobTitle);
+    };
+
+    console.log('Dashboard Data:', data);
+
     // Renders and passes data as props to sub-components
     return (
         <Container>
-            <JobFilter jobtitles={[]} selectedJob={'Data Analyst'} onChange={() => {}} />
             <Grid container spacing={3}> 
                 <Grid item xs={12}>
                     <SummaryStats stats={data.summaryStats} />
@@ -57,6 +64,7 @@ const Dashboard = () => {
                     <ThreeDModel />
                 </Grid>
             </Grid>
+            <JobFilter jobtitles={['Data Analyst', 'Data Scientist', 'Data Engineer']} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} />
         </Container>
     );
 };
