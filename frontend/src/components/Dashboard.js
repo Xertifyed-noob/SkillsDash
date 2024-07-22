@@ -15,26 +15,27 @@ const Dashboard = () => {
     const dispatch = useDispatch();
     // Retrieves and selects the data state from the redux store (Initial state)
     const data = useSelector(state => state.data, shallowEqual);  
+    // Default selected education level is 'Bachelors'
     const [selectedEducationLevel, setSelectedEducationLevel] = useState('Bachelors');
     const [selectedColor, setSelectedColor] = useState('#FF6384');
-    // For job title filtering
+    // No spectific default selected job title initially
     const [selectedJobTitle, setSelectedJobTitle] = useState('');
 
     // Fetches data, Dispatches action, and updates state in redux store upon component mount (Updated state)
     useEffect(() => {
-        console.log('Fetching data');
         // Ensures data fetching, action dispatch and state action effect happens only once via dependency array
         dispatch(fetchData(selectedJobTitle));
     }, [dispatch, selectedJobTitle]);
 
-    // For handling interactivity between pie chart and horizontal bar chart
+    // For handling interactivity between PieChart.js and HorizontalBarChart.js
     const handleSliceClick = (educationLevel, color) => {
         setSelectedEducationLevel(educationLevel);
         setSelectedColor(color);
     };
 
-    // For job title filtering
+    // For job title filtering by JobFilter.js
     const handleJobTitleChange = (jobTitle) => {
+        console.log('Selected job title:', jobTitle);
         setSelectedJobTitle(jobTitle);
     };
 

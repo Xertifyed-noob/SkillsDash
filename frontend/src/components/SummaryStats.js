@@ -6,7 +6,7 @@ const StatBox = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.primary,
-    backgroundColor: '#1e1e2f', 
+    // backgroundColor: '#1e1e2f', 
     borderRadius: '10px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
 }));
@@ -15,13 +15,13 @@ const StatTitle = styled(Typography)({
     fontSize: '1.2rem',
     fontWeight: 'bold',
     marginBottom: '0.5rem',
-    color: '#ffffff', 
+    color: '#000000', 
 });
 
 const StatValue = styled(Typography)({
     fontSize: '2rem',
     fontWeight: 'bold',
-    color: '#ffffff', 
+    color: '#000000', 
 });
 
 const SummaryStats = memo(({ stats }) => {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { produce } from 'immer';
 
-const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/aggregated`;
+const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api/data`;
 
 // Action creator to fetch data from API endpoints of routes.py, based on job title
 export const fetchData = (jobTitle) => async (dispatch) => {
