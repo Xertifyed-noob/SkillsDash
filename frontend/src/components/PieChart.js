@@ -6,12 +6,25 @@ const PieChart = memo(({ data, onSliceClick }) => {
     // Data should be an array of education level data (data.education_levels in Dashboard.js)
     console.log('PieChart Data:', data);
 
+    // Define a consistent color mapping for the education levels
+    const colorMapping = {
+        'Bachelors': '#FF6384', 
+        'Masters': '#FFCE56',
+        'PhD': '#36A2EB' 
+    };
+
+    // Ensure the data is always ordered as Bachelors, Masters, PhD
+    const orderedData = ['Bachelors', 'Masters', 'PhD'].map(level => {
+        const found = data.find(item => item.education_level === level);
+        return found || { education_level: level, count: 0 };
+    });
+    
     // Calculate total count of all the education level items 
-    const total = data.reduce((sum, item) => sum + item.count, 0);
+    const total = orderedData.reduce((sum, item) => sum + item.count, 0);
     // Extract the education level lables from data
-    const labels = data.map(item => item.education_level);
+    const labels = orderedData.map(item => item.education_level);
     // Calculares the percentage of each education
-    const percentages = data.map(item => (item.count / total) * 100);
+    const percentages = orderedData.map(item => (item.count / total) * 100);
 
     const chartData = {
         labels: labels,
@@ -19,8 +32,8 @@ const PieChart = memo(({ data, onSliceClick }) => {
             {
                 label: 'Education Levels',
                 data: percentages,
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-                hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                backgroundColor: orderedData.map(item => colorMapping[item.education_level]),
+                hoverBackgroundColor: orderedData.map(item => colorMapping[item.education_level])
             }
         ]
     };
@@ -30,7 +43,17 @@ const PieChart = memo(({ data, onSliceClick }) => {
         plugins: {
             legend: {
                 display: true,
-                position: 'top'
+                position: 'top',
+                labels: {
+                    generateLabels: (chart) => {
+                        return ['Bachelors', 'Masters', 'PhD'].map((label, index) => ({
+                            text: label,
+                            fillStyle: colorMapping[label],
+                            hidden: false,
+                            index: labels.indexOf(label)
+                        }));
+                    }
+                }
             },
             title: {
                 display: true,
@@ -49,6 +72,11 @@ const PieChart = memo(({ data, onSliceClick }) => {
                         }
                         label += parseFloat(context.raw).toFixed(1) + '%';
                         return label;
+                    },
+                    labelColor: function(context) {
+                        return {
+                            backgroundColor: colorMapping[context.label]
+                        };
                     }
                 }
             }

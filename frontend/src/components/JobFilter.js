@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material';
+import { FormControl, Select, MenuItem, Typography } from '@mui/material';
 
 const JobFilter = ({ jobtitles, selectedJob, onChange }) => {
     const handleChange = (event) => {
