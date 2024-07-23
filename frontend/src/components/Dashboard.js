@@ -15,29 +15,31 @@ const Dashboard = () => {
     const dispatch = useDispatch();
     // Retrieves and selects the data state from the redux store (Initial state)
     const data = useSelector(state => state.data, shallowEqual);  
-    // Default selected education level is 'Bachelors'
-    const [selectedEducationLevel, setSelectedEducationLevel] = useState('Bachelors');
-    const [selectedColor, setSelectedColor] = useState('#FF6384');
-    // No spectific default selected job title initially
-    const [selectedJobTitle, setSelectedJobTitle] = useState('');
 
-    // Fetches data, Dispatches action, and updates state in redux store upon component mount (Updated state)
-    useEffect(() => {
-        // Ensures data fetching, action dispatch and state action effect happens only once via dependency array
-        dispatch(fetchData(selectedJobTitle));
-    }, [dispatch, selectedJobTitle]);
+    // Access job listing counts from data object and pass it as props to the visualisations
+    const jobListingCount = data.summaryStats.total_job_listings;
 
     // For handling interactivity between PieChart.js and HorizontalBarChart.js
+    const [selectedEducationLevel, setSelectedEducationLevel] = useState('Bachelors');
+    const [selectedColor, setSelectedColor] = useState('#FF6384');
     const handleSliceClick = (educationLevel, color) => {
         setSelectedEducationLevel(educationLevel);
         setSelectedColor(color);
     };
 
     // For job title filtering by JobFilter.js
+    const [selectedJobTitle, setSelectedJobTitle] = useState('');
+    const jobTitles = ['Data Analyst', 'Data Scientist', 'Data Engineer'];
     const handleJobTitleChange = (jobTitle) => {
         console.log('Selected job title:', jobTitle);
         setSelectedJobTitle(jobTitle);
     };
+
+    // Fetches data, Dispatches action, and updates state in redux store upon component mount (Updated state)
+    useEffect(() => {
+        // Ensures data fetching, action dispatch and state action effect happens only once via dependency array
+        dispatch(fetchData(selectedJobTitle));
+    }, [dispatch, selectedJobTitle]);
 
     console.log('Dashboard Data:', data);
 
@@ -49,13 +51,13 @@ const Dashboard = () => {
                     <SummaryStats stats={data.summaryStats} />
                 </Grid>
                 <Grid item xs={6}>
-                    <SkillsBarChart data={data.skills} />
+                    <SkillsBarChart data={data.skills} jobListingCount={jobListingCount} />
                 </Grid>
                 <Grid item xs={6}>
-                    <ToolsBarChart data={data.tools}/>
+                    <ToolsBarChart data={data.tools} jobListingCount={jobListingCount} />
                 </Grid>
                 <Grid item xs={6}>
-                    <PieChart data={data.education_levels} onSliceClick={handleSliceClick}/>
+                    <PieChart data={data.education_levels} jobListingCount={jobListingCount} onSliceClick={handleSliceClick}/>
                 </Grid>
                 <Grid item xs={6}>
                     <HorizontalBarChart data={data.fields_of_study} selectedEducationLevel={selectedEducationLevel} selectedColor={selectedColor} /> 
@@ -64,7 +66,7 @@ const Dashboard = () => {
                     <ThreeDModel />
                 </Grid>
             </Grid>
-            <JobFilter jobtitles={['Data Analyst', 'Data Scientist', 'Data Engineer']} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} />
+            <JobFilter jobtitles={jobTitles} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} />
         </Container>
     );
 };

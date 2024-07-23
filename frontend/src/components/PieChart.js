@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Pie } from 'react-chartjs-2';
 
-const PieChart = memo(({ data, onSliceClick }) => {
+const PieChart = memo(({ data, onSliceClick, jobListingCount }) => {
 
     // Data should be an array of education level data (data.education_levels in Dashboard.js)
     console.log('PieChart Data:', data);
@@ -57,7 +57,7 @@ const PieChart = memo(({ data, onSliceClick }) => {
             },
             title: {
                 display: true,
-                text: 'Education Level Distribution across roles',
+                text: `Education Level distribution across ${jobListingCount} Jobs`,
                 color: '#000',
                 font: {
                     size: 16

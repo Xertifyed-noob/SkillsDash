@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Bar } from 'react-chartjs-2'
 
-const SkillsBarChart = memo(({ data }) => {
+const SkillsBarChart = memo(({ data, jobListingCount }) => {
 
     // Data should be an array of skills data (data.skills in Dashboard.js)
     console.log('SkillsBarChart Data:', data); 
@@ -34,7 +34,7 @@ const SkillsBarChart = memo(({ data }) => {
             },
             title: {
                 display: true,
-                text: 'Skills Distribution across roles',
+                text: `Skills distribution across ${jobListingCount} Jobs`,
                 color: '#000' 
             },
             tooltip: {

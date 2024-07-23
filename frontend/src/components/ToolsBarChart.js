@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Bar } from 'react-chartjs-2';
 
-const ToolsBarChart = memo(({ data }) => {
+const ToolsBarChart = memo(({ data, jobListingCount }) => {
 
     // Data should be an array of tools data (data.tools in Dashboard.js)
     console.log('ToolsBarChart Data:', data); 
@@ -34,7 +34,7 @@ const ToolsBarChart = memo(({ data }) => {
             },
             title: {
                 display: true,
-                text: 'Tools Distribution across roles',
+                text: `Tools distribution across ${jobListingCount} Jobs`,
                 color: '#000' 
             },
             tooltip: {
