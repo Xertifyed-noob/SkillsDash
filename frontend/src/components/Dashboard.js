@@ -37,7 +37,7 @@ const Dashboard = () => {
 
     // Fetches data, Dispatches action, and updates state in redux store upon component mount (Updated state)
     useEffect(() => {
-        // Ensures data fetching, action dispatch and state action effect happens only once via dependency array
+        // Ensures data fetching, action dispatch and state action effect happens again only if job title changes
         dispatch(fetchData(selectedJobTitle));
     }, [dispatch, selectedJobTitle]);
 

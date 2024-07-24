@@ -9,28 +9,36 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
     // Data should be an array of tools data (data.tools in Dashboard.js)
     console.log('ToolsBarChart Data:', data); 
 
+    // Define state variables with useState hook
     const dispatch = useDispatch();
     const [drilldownData, setDrilldownData] = useState(null);
+    const [drilldownTitle, setDrilldownTitle] = useState('');
     const [currentJobTitle, setCurrentJobTitle] = useState(jobTitle);
     const [currentTool, setCurrentTool] = useState(null);
-    const [drilldownTitle, setDrilldownTitle] = useState('');
-
+ 
+    // Function to fetch and set drilldown data for a selected tool
     const fetchAndSetDrilldownData = useCallback((tool, jobTitle) => {
+        // Dispatches action creator to fetch industry data for a selected tool
         dispatch(fetchToolIndustryData(tool, jobTitle)).then((response) => {
+            // Sort the data by count and take the top 7 industries, and compute proportions
             const sortedDrilldownData = [...response.toolIndustries].sort((a, b) => b.count - a.count).slice(0, 7);
             const totalCount = [...response.toolIndustries].reduce((sum, item) => sum + item.count, 0);
             const drilldownDataProportions = sortedDrilldownData.map(item => ({
                 ...item,
                 proportion: (item.count / totalCount) * 100
             }));
+            // Update the state with processed drilldown data and the drilldown chart title
             setDrilldownData(drilldownDataProportions);
             setDrilldownTitle(`Distribution of Tool (${tool}) across Industries`);
         });
     }, [dispatch]);
 
+    // Hook to perform side effects when job title, current selected tool, or other dependencies change
     useEffect(() => {
+        // If a different job title is selected, update job title state
         if (currentJobTitle !== jobTitle) {
             setCurrentJobTitle(jobTitle);
+            // If a tool is selected, fetch and set drilldown data for that tool, else reset drilldown data
             if (currentTool) {
                 fetchAndSetDrilldownData(currentTool, jobTitle);
             } else {
@@ -39,11 +47,13 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
         }
     }, [jobTitle, currentJobTitle, currentTool, fetchAndSetDrilldownData]);
 
+    // When a bar in the bar chart is clicked, update skill state, and fetch drilldown data for clicked skill
     const handleClick = (tool) => {
         setCurrentTool(tool);
         fetchAndSetDrilldownData(tool, jobTitle);
     };
 
+    // When revert button is clicked, reset the drilldown data
     const handleRevert = () => {
         setDrilldownData(null);
         setCurrentTool(null);
@@ -177,6 +187,10 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
                     }
                 }
             }
+        },
+        onClick: null,
+        onHover: (event) => {
+            event.native.target.style.cursor = 'default';
         },
         scales: {
             x: {

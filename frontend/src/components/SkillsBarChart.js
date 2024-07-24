@@ -9,28 +9,36 @@ const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
     // Data should be an array of skills data (data.skills in Dashboard.js)
     console.log('SkillsBarChart Data:', data); 
 
+    // Define state variables with useState hook
     const dispatch = useDispatch();
     const [drilldownData, setDrilldownData] = useState(null);
+    const [drilldownTitle, setDrilldownTitle] = useState('');
     const [currentJobTitle, setCurrentJobTitle] = useState(jobTitle);
     const [currentSkill, setCurrentSkill] = useState(null);
-    const [drilldownTitle, setDrilldownTitle] = useState('');
 
+    // Function to fetch and set drilldown data for a selected skill
     const fetchAndSetDrilldownData = useCallback((skill, jobTitle) => {
+        // Dispatches action creator to fetch industry data for a selected skill
         dispatch(fetchSkillIndustryData(skill, jobTitle)).then((response) => {
+            // Sort the data by count and take the top 7 industries, and compute proportions
             const sortedDrilldownData = [...response.skillIndustries].sort((a, b) => b.count - a.count).slice(0, 7);
             const totalCount = [...response.skillIndustries].reduce((sum, item) => sum + item.count, 0);
             const drilldownDataProportions = sortedDrilldownData.map(item => ({
                 ...item,
                 proportion: (item.count / totalCount) * 100
             }));
+            // Update the state with processed drilldown data and the drilldown chart title
             setDrilldownData(drilldownDataProportions);
             setDrilldownTitle(`Distribution of Skill (${skill}) across Industries`);
         });
     }, [dispatch]);
 
+    // Hook to perform side effects when job title, current selected skill, or other dependencies change
     useEffect(() => {
+        // If a different job title is selected, update job title state
         if (currentJobTitle !== jobTitle) {
             setCurrentJobTitle(jobTitle);
+            // If a skill is selected, fetch and set drilldown data for that skill, else reset drilldown data
             if (currentSkill) {
                 fetchAndSetDrilldownData(currentSkill, jobTitle);
             } else {
@@ -39,11 +47,13 @@ const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
         }
     }, [jobTitle, currentJobTitle, currentSkill, fetchAndSetDrilldownData]);
 
+    // When a bar in the bar chart is clicked, update skill state, and fetch drilldown data for clicked skill
     const handleClick = (skill) => {
         setCurrentSkill(skill);
         fetchAndSetDrilldownData(skill, jobTitle);
     };
 
+    // When revert button is clicked, reset the drilldown data
     const handleRevert = () => {
         setDrilldownData(null);
         setCurrentSkill(null);
@@ -177,6 +187,10 @@ const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
                     }
                 }
             }
+        },
+        onClick: null,
+        onHover: (event) => {
+            event.native.target.style.cursor = 'default';
         },
         scales: {
             x: {
