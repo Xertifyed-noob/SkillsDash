@@ -7,7 +7,9 @@ const initialState = {
         fields_of_study: [],
         summaryStats: {}
     },
-    jobTitles: []
+    jobTitles: [],
+    skillIndustries: [],
+    toolIndustries: []
 };
   
 // Root reducer which handles different action types
@@ -31,6 +33,18 @@ const rootReducer = (state = initialState, action) => {
                 };
             }
             return state;
+        case 'FETCH_SKILL_INDUSTRY_DATA':
+            // Returns the new state with the updated data from the action payload
+            return {
+                ...state,
+                skillIndustries: action.payload
+            };
+        case 'FETCH_TOOL_INDUSTRY_DATA':
+            // Returns the new state with the updated data from the action payload
+            return {
+                ...state,
+                toolIndustries: action.payload
+            };
         // Else if the current state data is the same as the new data, returns the current unchanged state
         default:
             return state;
