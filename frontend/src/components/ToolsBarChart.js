@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect, useCallback } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useDispatch } from 'react-redux';
 import { fetchToolIndustryData } from '../redux/actions';
@@ -10,17 +10,35 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
 
     const dispatch = useDispatch();
     const [drilldownData, setDrilldownData] = useState(null);
+    const [currentJobTitle, setCurrentJobTitle] = useState(jobTitle);
+    const [currentTool, setCurrentTool] = useState(null);
 
-    const handleClick = (tool) => {
+    const fetchAndSetDrilldownData = useCallback((tool, jobTitle) => {
         dispatch(fetchToolIndustryData(tool, jobTitle)).then((response) => {
-            const sortedDrilldownData = [...response.toolIndustries].sort((a, b) => b.count - a.count).slice(0, 5);
-            const totalCount = sortedDrilldownData.reduce((sum, item) => sum + item.count, 0);
+            const sortedDrilldownData = [...response.toolIndustries].sort((a, b) => b.count - a.count).slice(0, 7);
+            const totalCount = [...response.toolIndustries].reduce((sum, item) => sum + item.count, 0);
             const drilldownDataProportions = sortedDrilldownData.map(item => ({
                 ...item,
                 proportion: (item.count / totalCount) * 100
             }));
             setDrilldownData(drilldownDataProportions);
         });
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (currentJobTitle !== jobTitle) {
+            setCurrentJobTitle(jobTitle);
+            if (currentTool) {
+                fetchAndSetDrilldownData(currentTool, jobTitle);
+            } else {
+                setDrilldownData(null);
+            }
+        }
+    }, [jobTitle, currentJobTitle, currentTool, fetchAndSetDrilldownData]);
+
+    const handleClick = (tool) => {
+        setCurrentTool(tool);
+        fetchAndSetDrilldownData(tool, jobTitle);
     };
 
     // Sort the data by count and take the top 10 tools

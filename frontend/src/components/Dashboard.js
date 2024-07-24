@@ -51,10 +51,10 @@ const Dashboard = () => {
                     <SummaryStats stats={data.summaryStats} />
                 </Grid>
                 <Grid item xs={6}>
-                    <SkillsBarChart data={data.skills} jobListingCount={jobListingCount} />
+                    <SkillsBarChart data={data.skills} jobListingCount={jobListingCount} jobTitle={selectedJobTitle} />
                 </Grid>
                 <Grid item xs={6}>
-                    <ToolsBarChart data={data.tools} jobListingCount={jobListingCount} />
+                    <ToolsBarChart data={data.tools} jobListingCount={jobListingCount} jobTitle={selectedJobTitle} />
                 </Grid>
                 <Grid item xs={6}>
                     <PieChart data={data.education_levels} jobListingCount={jobListingCount} onSliceClick={handleSliceClick}/>

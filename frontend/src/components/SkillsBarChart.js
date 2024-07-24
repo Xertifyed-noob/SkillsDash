@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect, useCallback} from 'react';
 import { Bar } from 'react-chartjs-2'
 import { useDispatch } from 'react-redux';
 import { fetchSkillIndustryData } from '../redux/actions';
@@ -10,17 +10,35 @@ const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
 
     const dispatch = useDispatch();
     const [drilldownData, setDrilldownData] = useState(null);
+    const [currentJobTitle, setCurrentJobTitle] = useState(jobTitle);
+    const [currentSkill, setCurrentSkill] = useState(null);
 
-    const handleClick = (skill) => {
+    const fetchAndSetDrilldownData = useCallback((skill, jobTitle) => {
         dispatch(fetchSkillIndustryData(skill, jobTitle)).then((response) => {
-            const sortedDrilldownData = [...response.skillIndustries].sort((a, b) => b.count - a.count).slice(0, 5);
-            const totalCount = sortedDrilldownData.reduce((sum, item) => sum + item.count, 0);
+            const sortedDrilldownData = [...response.skillIndustries].sort((a, b) => b.count - a.count).slice(0, 7);
+            const totalCount = [...response.skillIndustries].reduce((sum, item) => sum + item.count, 0);
             const drilldownDataProportions = sortedDrilldownData.map(item => ({
                 ...item,
                 proportion: (item.count / totalCount) * 100
             }));
             setDrilldownData(drilldownDataProportions);
         });
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (currentJobTitle !== jobTitle) {
+            setCurrentJobTitle(jobTitle);
+            if (currentSkill) {
+                fetchAndSetDrilldownData(currentSkill, jobTitle);
+            } else {
+                setDrilldownData(null);
+            }
+        }
+    }, [jobTitle, currentJobTitle, currentSkill, fetchAndSetDrilldownData]);
+
+    const handleClick = (skill) => {
+        setCurrentSkill(skill);
+        fetchAndSetDrilldownData(skill, jobTitle);
     };
 
     // Sort the data by count and take the top 10 skills
