@@ -16,7 +16,7 @@ const Dashboard = () => {
     // Retrieves and selects the data state from the redux store (Initial state)
     const data = useSelector(state => state.data, shallowEqual);  
 
-    // Access job listing counts from data object and pass it as props to the visualisations
+    // Access job listing counts from data object and pass it as props to the visualisations for chart titles
     const jobListingCount = data.summaryStats.total_job_listings;
 
     // For handling interactivity between PieChart.js and HorizontalBarChart.js

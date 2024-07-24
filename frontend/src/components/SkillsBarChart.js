@@ -2,6 +2,7 @@ import React, { memo, useState, useEffect, useCallback} from 'react';
 import { Bar } from 'react-chartjs-2'
 import { useDispatch } from 'react-redux';
 import { fetchSkillIndustryData } from '../redux/actions';
+import { Button } from '@mui/material';
 
 const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
 
@@ -12,6 +13,7 @@ const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
     const [drilldownData, setDrilldownData] = useState(null);
     const [currentJobTitle, setCurrentJobTitle] = useState(jobTitle);
     const [currentSkill, setCurrentSkill] = useState(null);
+    const [drilldownTitle, setDrilldownTitle] = useState('');
 
     const fetchAndSetDrilldownData = useCallback((skill, jobTitle) => {
         dispatch(fetchSkillIndustryData(skill, jobTitle)).then((response) => {
@@ -22,6 +24,7 @@ const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
                 proportion: (item.count / totalCount) * 100
             }));
             setDrilldownData(drilldownDataProportions);
+            setDrilldownTitle(`Distribution of Skill (${skill}) across Industries`);
         });
     }, [dispatch]);
 
@@ -39,6 +42,11 @@ const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
     const handleClick = (skill) => {
         setCurrentSkill(skill);
         fetchAndSetDrilldownData(skill, jobTitle);
+    };
+
+    const handleRevert = () => {
+        setDrilldownData(null);
+        setCurrentSkill(null);
     };
 
     // Sort the data by count and take the top 10 skills
@@ -154,7 +162,7 @@ const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
             },
             title: {
                 display: true,
-                text: `Distribution of Skill across Industries`,
+                text: drilldownTitle,
                 color: '#000'
             },
             tooltip: {
@@ -212,8 +220,16 @@ const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
 
     return (
         <div>
-            <Bar data={chartData} options={options} />
-            {drilldownData && <Bar data={drilldownChartData} options={drilldownOptions} />}
+            {!drilldownData ? (
+                <Bar data={chartData} options={options} />
+            ) : (
+                <>
+                    <Bar data={drilldownChartData} options={drilldownOptions} />
+                    <Button variant="contained" color="primary" onClick={handleRevert} style={{ marginTop: '5px' }}>
+                        Revert
+                    </Button>
+                </>
+            )}
         </div>
     );
 });
