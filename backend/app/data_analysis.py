@@ -3,22 +3,32 @@ from app import db
 from app.models import Skill, Tool, EducationLevel, FieldOfStudy
 
 # Function to aggregate a given column (skill, tool, education_level) of a MySQL table
-def aggregate_query(model, column, job_title=None):
-    # Count the occurence of each unique item under the column
-    query = db.session.query(column, db.func.count(column).label('count'))
+def aggregate_query(model, column, job_title=None, industry=None):
+    # Count the occurence of each unique item under the given column, and also the indsutry column if present 
+    query_columns = [column] + ([industry] if industry else []) + [db.func.count(column).label('count')]
+    query = db.session.query(*query_columns)
     # Job title filtering
     if job_title:
         query = query.filter(model.job_title == job_title)
-    # Combine rows with the same item under the column
-    query = query.group_by(column).all()
-    return pd.DataFrame(query, columns=[column.name, 'count'])
+    # Filter out rows where the industry is "Unknown" if industry column is present
+    if industry:
+        query = query.filter(industry != "Unknown")
+    # Combine rows with the same item under the given column, or combine rows with the same items under both the given column and industry column if present
+    group_by_columns = [column] + ([industry] if industry else [])
+    query = query.group_by(*group_by_columns).all()
+    # Construct the dataframe of aggregated columns
+    df_columns = [column.name] + ([industry.name] if industry else []) + ['count']
+    return pd.DataFrame(query, columns=df_columns)
 
 
 # Function to further aggregate tool column to include the counts of their appearances alongside any of the top skills [Originally used for BubbleChart.js]
-def aggregate_tools(job_title=None):
+def aggregate_tools(job_title=None, industry=None):
     top_skills = get_top_skills()
-    # Aggregate the tool column and return a data frame of tool counts
-    tool_counts = aggregate_query(Tool, Tool.tool)
+    # If industry column is present, aggregate both tool and industry column, else, aggregate only the tool column
+    if industry:
+        tool_counts = aggregate_query(Tool, Tool.tool, job_title, industry=Tool.industry)
+    else:
+        tool_counts = aggregate_query(Tool, Tool.tool, job_title)
     tool_counts['co_appearance'] = 0
 
     for tool in tool_counts['tool']:
@@ -80,7 +90,8 @@ def calculate_summary_stats(data):
 
     # Calculate job listings and unique industries
     total_job_listings = len(data)
-    total_industries = data['Sector'].nunique()
+    # Total industries not including "Unknown"
+    total_industries = data['Sector'].nunique() - 1
 
     # Replace 'Unknown' with NaN in 'Rating' and 'Salary' columns
     data.loc[data['Rating'] == 'Unknown', 'Rating'] = pd.NA

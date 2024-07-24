@@ -1,10 +1,11 @@
 from flask import Blueprint, jsonify, request, current_app
-from .data_analysis import aggregate_data
+from app.models import Skill, Tool
+from .data_analysis import aggregate_query, aggregate_data
 
 # Creates 'main' blueprint for organising routes
 main = Blueprint('main', __name__)
 
-# Consolidated view handler to aggregate records and also filter the data if a job title is selected by JobFilter.js
+# Consolidated API endpoint to aggregate records and also filter the data if a job title is selected by JobFilter.js
 @main.route('/api/data', methods=['GET'])
 def get_filtered_data():
     job_title = request.args.get('job_title')
@@ -19,3 +20,21 @@ def get_filtered_data():
         'summaryStats': summary_stats
     }
     return jsonify(response)
+
+# API endpoint to fetch counts for a specific selected skill across industries
+@main.route('/api/data/skill_industries', methods=['GET'])
+def get_skill_industry_counts():
+    skill = request.args.get('skill')
+    job_title = request.args.get('job_title')
+    counts = aggregate_query(Skill, Skill.skill, job_title, Skill.industry)
+    skill_industry_counts = counts[counts['skill'] == skill]
+    return jsonify(skill_industry_counts.to_dict(orient='records'))
+
+# API endpoint to fetch counts for a specific selected tool across industries
+@main.route('/api/data/tool_industries', methods=['GET'])
+def get_tool_industry_counts():
+    tool = request.args.get('tool')
+    job_title = request.args.get('job_title')
+    counts = aggregate_query(Tool, Tool.tool, job_title, Tool.industry)
+    tool_industry_counts = counts[counts['tool'] == tool]
+    return jsonify(tool_industry_counts.to_dict(orient='records'))

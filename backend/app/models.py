@@ -19,13 +19,15 @@ class Skill(db.Model):
     skill = db.Column(db.String(100), nullable=False)
     job_title = db.Column(db.String(100), nullable=False)
     job_id = db.Column(db.Integer, db.ForeignKey('job.id'), nullable=False)
-
+    industry = db.Column(db.String(100), nullable=False)
+    
     def to_dict(self):
         return {
             'id': self.id,
             'skill': self.skill,
             'job_title': self.job_title,
-            'job_id': self.job_id
+            'job_id': self.job_id,
+            'industry': self.industry
         }
 
 # Table to store tools data
@@ -34,13 +36,15 @@ class Tool(db.Model):
     tool = db.Column(db.String(100), nullable=False)
     job_title = db.Column(db.String(100), nullable=False)
     job_id = db.Column(db.Integer, db.ForeignKey('job.id'), nullable=False)
+    industry = db.Column(db.String(100), nullable=False)
 
     def to_dict(self):
         return {
             'id': self.id,
             'tool': self.tool,
             'job_title': self.job_title,
-            'job_id': self.job_id
+            'job_id': self.job_id,
+            'industry': self.industry
         }
 
 # Table to store education level data

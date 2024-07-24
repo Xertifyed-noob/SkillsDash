@@ -14,9 +14,9 @@ def format_job(data):
 def format_data(data, column_name, jobs=None):
     items_list = []
 
-    # If processing skills and tools column
+    # If processing skills and tools column (not education column)
     if jobs is not None:
-        # Create a mapper list that maps job titles to job ID
+        # Create a mapper list that maps job titles to job ID [Originally used for BubbleChart.js]
         mapper_list = [(row['job_title'], idx + 1) for idx, row in jobs.iterrows()]
 
     # Sequentially iterate over the rows in the dataset
@@ -33,9 +33,11 @@ def format_data(data, column_name, jobs=None):
                     'job_title': job_title, 
                     column_name.lower(): item.strip()
                 }
+                # If processing skills and tools column (not education column)
                 if jobs is not None:
-                    # Map job title to job title ID
-                    item_dict['job_id'] = mapper_list[idx][1]
+                    # Map job title to job title ID, and add industry attribute to the dictionary
+                    item_dict['job_id'] = mapper_list[idx][1] 
+                    item_dict['industry'] = row['Sector']
                 items_list.append(item_dict)
 
     formatted_data = pd.DataFrame(items_list)
