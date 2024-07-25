@@ -38,7 +38,7 @@ const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }
             title: {
                 display: true,
                 text: `Top fields of Study for ${selectedEducationLevel} Degree`,
-                color: '#000',
+                color: '#D1D5DB',
                 font: {
                     size: 16
                 }
@@ -61,13 +61,13 @@ const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }
                 title: {
                     display: true,
                     text: 'Percentage',
-                    color: '#000',
+                    color: '#D1D5DB',
                     font: {
                         size: 16
                     }
                 },
                 ticks: {
-                    color: '#000',
+                    color: '#D1D5DB',
                     callback: function(value) {
                         return value.toFixed(0) + "%";
                     },
@@ -81,13 +81,13 @@ const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }
                 title: {
                     display: true,
                     text: 'Fields of Study',
-                    color: '#000',
+                    color: '#D1D5DB',
                     font: {
                         size: 16
                     }
                 },
                 ticks: {
-                    color: '#000'
+                    color: '#D1D5DB'
                 },
                 grid: {
                     display: false

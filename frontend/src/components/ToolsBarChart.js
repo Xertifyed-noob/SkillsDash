@@ -2,7 +2,6 @@ import React, { memo, useState, useEffect, useCallback } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useDispatch } from 'react-redux';
 import { fetchToolIndustryData } from '../redux/actions';
-import { Button } from '@mui/material';
 
 const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
 
@@ -88,7 +87,7 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
             title: {
                 display: true,
                 text: `Tools distribution across ${jobListingCount} Jobs`,
-                color: '#000' 
+                color: '#D1D5DB' 
             },
             tooltip: {
                 callbacks: {
@@ -117,13 +116,13 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
                 title: {
                     display: true,
                     text: 'Tools',
-                    color: '#000',
+                    color: '#D1D5DB',
                     font: {
                         size: 16,
                     }
                 },
                 ticks: {
-                    color: '#000'  
+                    color: '#D1D5DB'  
                 },
                 grid: {
                     display: false 
@@ -133,13 +132,13 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
                 title: {
                     display: true,
                     text: 'Percentage',
-                    color: '#000',
+                    color: '#D1D5DB',
                     font: {
                         size: 16
                     }
                 },
                 ticks: {
-                    color: '#000',
+                    color: '#D1D5DB',
                     callback: function(value) {
                         return value.toFixed(0) + "%";  
                     },
@@ -173,7 +172,7 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
             title: {
                 display: true,
                 text: drilldownTitle,
-                color: '#000'
+                color: '#D1D5DB'
             },
             tooltip: {
                 callbacks: {
@@ -197,13 +196,13 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
                 title: {
                     display: true,
                     text: 'Industries',
-                    color: '#000',
+                    color: '#D1D5DB',
                     font: {
                         size: 16
                     }
                 },
                 ticks: {
-                    color: '#000'
+                    color: '#D1D5DB'
                 },
                 grid: {
                     display: false
@@ -213,13 +212,13 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
                 title: {
                     display: true,
                     text: 'Percentage',
-                    color: '#000',
+                    color: '#D1D5DB',
                     font: {
                         size: 16
                     }
                 },
                 ticks: {
-                    color: '#000',
+                    color: '#D1D5DB',
                     callback: function(value) {
                         return value.toFixed(0) + '%';
                     },
@@ -239,9 +238,12 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
             ) : (
                 <>
                     <Bar data={drilldownChartData} options={drilldownOptions} />
-                    <Button variant="contained" color="primary" onClick={handleRevert} style={{ marginTop: '5px' }}>
+                    <button
+                        onClick={handleRevert}
+                        className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark focus:outline-none"
+                    >
                         Revert
-                    </Button>
+                    </button>
                 </>
             )}
         </div>

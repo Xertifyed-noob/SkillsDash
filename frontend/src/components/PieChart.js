@@ -48,6 +48,7 @@ const PieChart = memo(({ data, onSliceClick, jobListingCount }) => {
                     generateLabels: (chart) => {
                         return ['Bachelors', 'Masters', 'PhD'].map((label, index) => ({
                             text: label,
+                            fontColor: '#D1D5DB',
                             fillStyle: colorMapping[label],
                             hidden: false,
                             index: labels.indexOf(label)
@@ -58,7 +59,7 @@ const PieChart = memo(({ data, onSliceClick, jobListingCount }) => {
             title: {
                 display: true,
                 text: `Education Level distribution across ${jobListingCount} Jobs`,
-                color: '#000',
+                color: '#D1D5DB',
                 font: {
                     size: 16
                 }
