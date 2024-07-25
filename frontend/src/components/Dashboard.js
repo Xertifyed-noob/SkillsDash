@@ -8,7 +8,6 @@ import HorizontalBarChart from './HorizontalBarChart';
 import SummaryStats from './SummaryStats';
 import JobFilter from './JobFilter';
 import ThreeDModel from './ThreeDModel';
-import { Grid, Container } from '@mui/material';
 
 const Dashboard = () => {
     // Retrieves the dispatch function to send actions to the redux store
@@ -45,29 +44,41 @@ const Dashboard = () => {
 
     // Renders and passes data as props to sub-components
     return (
-        <Container>
-            <Grid container spacing={3}> 
-                <Grid item xs={12}>
-                    <SummaryStats stats={data.summaryStats} />
-                </Grid>
-                <Grid item xs={6}>
-                    <SkillsBarChart data={data.skills} jobListingCount={jobListingCount} jobTitle={selectedJobTitle} />
-                </Grid>
-                <Grid item xs={6}>
-                    <ToolsBarChart data={data.tools} jobListingCount={jobListingCount} jobTitle={selectedJobTitle} />
-                </Grid>
-                <Grid item xs={6}>
-                    <PieChart data={data.education_levels} jobListingCount={jobListingCount} onSliceClick={handleSliceClick}/>
-                </Grid>
-                <Grid item xs={6}>
-                    <HorizontalBarChart data={data.fields_of_study} selectedEducationLevel={selectedEducationLevel} selectedColor={selectedColor} /> 
-                </Grid>
-                <Grid item xs={6}>
-                    <ThreeDModel />
-                </Grid>
-            </Grid>
-            <JobFilter jobtitles={jobTitles} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} />
-        </Container>
+        <div className="min-h-screen bg-background text-white p-6">
+            <div className="container mx-auto h-full">
+                <div className="grid grid-cols-1 lg:grid-cols-6 gap-6 h-full">
+                    <div className="lg:col-span-6 flex flex-col">
+                        <SummaryStats stats={data.summaryStats} />
+                    </div>
+                    <div className="lg:col-span-3 flex-col">
+                        <div className="h-full">
+                            <SkillsBarChart data={data.skills} jobListingCount={jobListingCount} jobTitle={selectedJobTitle} />
+                        </div>
+                    </div>
+                    <div className="lg:col-span-3 flex-col">
+                        <div className="h-full">
+                            <ToolsBarChart data={data.tools} jobListingCount={jobListingCount} jobTitle={selectedJobTitle} />
+                        </div>
+                    </div>
+                    <div className="lg:col-span-3 flex-col">
+                        <div className="h-full">
+                            <PieChart data={data.education_levels} jobListingCount={jobListingCount} onSliceClick={handleSliceClick} />
+                        </div>
+                    </div>
+                    <div className="lg:col-span-3 flex-col">
+                        <div className="h-full">
+                            <HorizontalBarChart data={data.fields_of_study} selectedEducationLevel={selectedEducationLevel} selectedColor={selectedColor} />
+                        </div>
+                    </div>
+                    <div className="lg:col-span-6 flex">
+                        <ThreeDModel />
+                    </div>
+                </div>
+                <div className="mt-6">
+                    <JobFilter jobtitles={jobTitles} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} />
+                </div>
+            </div>
+        </div>
     );
 };
 
