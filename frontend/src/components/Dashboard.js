@@ -44,7 +44,7 @@ const Dashboard = () => {
 
     // Renders and passes data as props to sub-components
     return (
-        <div className="min-h-screen bg-background text-white p-6">
+        <div className="dashboard-container">
             <div className="container mx-auto h-full">
                 <div className="grid grid-cols-1 lg:grid-cols-6 gap-6 h-full">
                     <div className="lg:col-span-6 flex flex-col">
@@ -73,9 +73,9 @@ const Dashboard = () => {
                     <div className="lg:col-span-6 flex">
                         <ThreeDModel />
                     </div>
-                </div>
-                <div className="mt-6">
-                    <JobFilter jobtitles={jobTitles} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} />
+                    <div className="lg:col-span-6 flex">
+                        <JobFilter jobtitles={jobTitles} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} />
+                    </div>
                 </div>
             </div>
         </div>
