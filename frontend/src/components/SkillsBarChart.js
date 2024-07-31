@@ -3,7 +3,7 @@ import { Bar } from 'react-chartjs-2'
 import { useDispatch } from 'react-redux';
 import { fetchSkillIndustryData } from '../redux/actions';
 
-const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
+const SkillsBarChart = memo(({ data, jobTitle }) => {
 
     // Data should be an array of skills data (data.skills in Dashboard.js)
     console.log('SkillsBarChart Data:', data); 
@@ -59,7 +59,7 @@ const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
     };
 
     // Sort the data by count and take the top 10 skills
-    const sortedData = data.slice().sort((a, b) => b.count - a.count).slice(0, 10);
+    const sortedData = data.slice().sort((a, b) => b.count - a.count).slice(0, 9);
     // Calculate total count to compute proportions
     const totalCount = data.reduce((sum, item) => sum + item.count, 0);
     // Extract labels (skills) and data (proportions) for the top 10 skills
@@ -72,8 +72,9 @@ const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
             {
                 label: 'Skills',
                 data: proportions,
-                backgroundColor: 'rgba(75, 192, 192,1)',
-                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(122, 107, 255, 1)',
+                borderColor: 'rgba(122, 107, 255, 1)',
+                borderRadius: 5
             }
         ]
     };
@@ -86,19 +87,27 @@ const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
             },
             title: {
                 display: true,
-                text: `Skills distribution across ${jobListingCount} Jobs`,
-                color: '#D1D5DB' 
+                text: `Skills distribution`,
+                color: '#ffffff',
+                font: {
+                    size: 18,
+                    weight: 'bold',
+                },
+                align: 'start',
+                padding: {
+                    bottom: 40 
+                }
             },
             tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.10)',
+                borderColor: 'rgba(255, 255, 255, 0.2)',
+                borderWidth: 1,
+                position: 'nearest',
+                yAlign: 'bottom', 
                 callbacks: {
                     label: function(context) {
-                        let label = context.dataset.label || '';
-                        if (label) {
-                            label += ': ';
-                        }
-                        label += parseFloat(context.parsed.y).toFixed(1) + '%';
-                        return label;
-                    }
+                        return ` ${parseFloat(context.raw).toFixed(1)}%`;
+                    },
                 }
             }
         },
@@ -114,38 +123,35 @@ const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
         scales: {
             x: {
                 title: {
-                    display: true,
-                    text: 'Skills',
-                    color: '#D1D5DB',
-                    font: {
-                        size: 16
-                    }
+                    display: false
                 },
                 ticks: {
-                    color: '#D1D5DB'
+                    maxRotation: 0,
+                    minRotation: 0,
+                    font: {
+                        size: 12 
+                    },
+                    autoSkip: false,
                 },
                 grid: {
-                    display: false
+                    display: false,
                 }
             },
             y: {
                 title: {
-                    display: true,
-                    text: 'Percentage',
-                    color: '#D1D5DB',
-                    font: {
-                        size: 16
-                    }
+                    display: false,
                 },
                 ticks: {
-                    color: '#D1D5DB',
                     callback: function(value) {
                         return value.toFixed(0) + '%';
                     },
                     stepSize: 5
                 },
                 grid: {
-                    color: 'rgba(255, 255, 255, 0.2)'
+                    color: 'rgba(255, 255, 255, 0.1)',
+                },
+                border: {
+                    color: 'transparent'
                 }
             }
         }
@@ -172,7 +178,6 @@ const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
             title: {
                 display: true,
                 text: drilldownTitle,
-                color: '#D1D5DB'
             },
             tooltip: {
                 callbacks: {
@@ -196,7 +201,6 @@ const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
                 title: {
                     display: true,
                     text: 'Industries',
-                    color: '#D1D5DB',
                     font: {
                         size: 16
                     }
@@ -212,13 +216,11 @@ const SkillsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
                 title: {
                     display: true,
                     text: 'Percentage',
-                    color: '#D1D5DB',
                     font: {
                         size: 16
                     }
                 },
                 ticks: {
-                    color: '#D1D5DB',
                     callback: function(value) {
                         return value.toFixed(0) + '%';
                     },

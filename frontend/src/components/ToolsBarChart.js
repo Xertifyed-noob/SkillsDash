@@ -3,7 +3,7 @@ import { Bar } from 'react-chartjs-2';
 import { useDispatch } from 'react-redux';
 import { fetchToolIndustryData } from '../redux/actions';
 
-const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
+const ToolsBarChart = memo(({ data, jobTitle }) => {
 
     // Data should be an array of tools data (data.tools in Dashboard.js)
     console.log('ToolsBarChart Data:', data); 
@@ -72,8 +72,9 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
             {
                 label: 'Tools',
                 data: proportions,
-                backgroundColor: 'rgba(9, 195, 114, 1)',
-                borderColor: 'rgba(9, 195, 114, 1)',
+                backgroundColor: 'rgba(186, 245, 244, 1)',
+                borderColor: 'rgba(186, 245, 244, 1)',
+                borderRadius: 5
             }
         ]
     };
@@ -86,19 +87,27 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
             },
             title: {
                 display: true,
-                text: `Tools distribution across ${jobListingCount} Jobs`,
-                color: '#D1D5DB' 
+                text: `Tools distribution`,  
+                color: '#ffffff',
+                font: {
+                    size: 18,
+                    weight: 'bold',
+                },
+                align: 'start',
+                padding: {
+                    bottom: 40 
+                }   
             },
             tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.10)',
+                borderColor: 'rgba(255, 255, 255, 0.2)',
+                borderWidth: 1,
+                position: 'nearest',
+                yAlign: 'bottom', 
                 callbacks: {
                     label: function(context) {
-                        let label = context.dataset.label || '';
-                        if (label) {
-                            label += ': ';
-                        }
-                        label += parseFloat(context.parsed.y).toFixed(1) + '%';
-                        return label;
-                    }
+                        return ` ${parseFloat(context.raw).toFixed(1)}%`;
+                    },
                 }
             }
         },
@@ -114,15 +123,15 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
         scales: {
             x: {
                 title: {
-                    display: true,
-                    text: 'Tools',
-                    color: '#D1D5DB',
-                    font: {
-                        size: 16,
-                    }
+                    display: false
                 },
                 ticks: {
-                    color: '#D1D5DB'  
+                    maxRotation: 0, 
+                    minRotation: 0,
+                    font: {
+                        size: 12 
+                    },
+                    autoSkip: false,
                 },
                 grid: {
                     display: false 
@@ -130,22 +139,19 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
             },
             y: {
                 title: {
-                    display: true,
-                    text: 'Percentage',
-                    color: '#D1D5DB',
-                    font: {
-                        size: 16
-                    }
+                    display: false,
                 },
                 ticks: {
-                    color: '#D1D5DB',
                     callback: function(value) {
                         return value.toFixed(0) + "%";  
                     },
                     stepSize: 5
                 },
                 grid: {
-                    color: 'rgba(255, 255, 255, 0.2)' 
+                    color: 'rgba(255, 255, 255, 0.1)' 
+                },
+                border: {
+                    color: 'transparent'
                 }
             }
         }
@@ -172,7 +178,6 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
             title: {
                 display: true,
                 text: drilldownTitle,
-                color: '#D1D5DB'
             },
             tooltip: {
                 callbacks: {
@@ -196,13 +201,9 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
                 title: {
                     display: true,
                     text: 'Industries',
-                    color: '#D1D5DB',
                     font: {
                         size: 16
                     }
-                },
-                ticks: {
-                    color: '#D1D5DB'
                 },
                 grid: {
                     display: false
@@ -212,13 +213,11 @@ const ToolsBarChart = memo(({ data, jobListingCount, jobTitle }) => {
                 title: {
                     display: true,
                     text: 'Percentage',
-                    color: '#D1D5DB',
                     font: {
                         size: 16
                     }
                 },
                 ticks: {
-                    color: '#D1D5DB',
                     callback: function(value) {
                         return value.toFixed(0) + '%';
                     },

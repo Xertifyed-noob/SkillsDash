@@ -23,12 +23,12 @@ const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }
                 data: proportions,
                 backgroundColor: selectedColor,
                 borderColor: selectedColor,
+                borderRadius: 5
             }
         ]
     };
 
     const options = {
-        // Makes the chart horizontal
         indexAxis: 'y', 
         responsive: true,
         plugins: {
@@ -38,36 +38,32 @@ const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }
             title: {
                 display: true,
                 text: `Top fields of Study for ${selectedEducationLevel} Degree`,
-                color: '#D1D5DB',
+                color: '#ffffff',
                 font: {
-                    size: 16
+                    size: 18,
+                    weight: 'bold',
+                },
+                padding: {
+                    bottom: 40 
                 }
             },
             tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.10)',
+                borderColor: 'rgba(255, 255, 255, 0.2)',
+                borderWidth: 1,
                 callbacks: {
                     label: function(context) {
-                        let label = context.dataset.label || '';
-                        if (label) {
-                            label += ': ';
-                        }
-                        label += parseFloat(context.raw).toFixed(1) + '%';
-                        return label;
-                    }
+                        return ` ${parseFloat(context.raw).toFixed(1)}%`;
+                    },
                 }
             }
         },
         scales: {
             x: {
                 title: {
-                    display: true,
-                    text: 'Percentage',
-                    color: '#D1D5DB',
-                    font: {
-                        size: 16
-                    }
+                    display: false
                 },
                 ticks: {
-                    color: '#D1D5DB',
                     callback: function(value) {
                         return value.toFixed(0) + "%";
                     },
@@ -79,15 +75,7 @@ const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }
             },
             y: {
                 title: {
-                    display: true,
-                    text: 'Fields of Study',
-                    color: '#D1D5DB',
-                    font: {
-                        size: 16
-                    }
-                },
-                ticks: {
-                    color: '#D1D5DB'
+                    display: false
                 },
                 grid: {
                     display: false

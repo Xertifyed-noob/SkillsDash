@@ -1,4 +1,5 @@
-// src/visualsConfig.js
+// Applies global configuration and styles to all charts
+
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -15,7 +16,7 @@ import {
 } from 'chart.js';
 import { MatrixElement } from 'chartjs-chart-matrix';
 
-// Register Chart.js components globally
+
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -28,5 +29,17 @@ ChartJS.register(
     LineElement,
     Filler,
     TimeScale,
-    MatrixElement, // Register matrix chart type
+    MatrixElement, 
 );
+
+// Font settings
+ChartJS.defaults.font.family = "'Eudoxus Sans', sans-serif";
+ChartJS.defaults.color = 'rgba(209, 213, 219, 1)'; 
+ChartJS.defaults.font.size = 14;
+
+
+
+
+
+
+
