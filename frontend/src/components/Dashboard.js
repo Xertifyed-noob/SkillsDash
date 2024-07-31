@@ -3,7 +3,7 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { fetchData } from '../redux/actions'
 import SkillsBarChart from './SkillsBarChart';
 import ToolsBarChart from './ToolsBarChart';
-import PieChart from './PieChart';
+import DoughnutChart from './DoughnutChart';
 import HorizontalBarChart from './HorizontalBarChart';
 import SummaryStats from './SummaryStats';
 import JobFilter from './JobFilter';
@@ -15,12 +15,9 @@ const Dashboard = () => {
     // Retrieves and selects the data state from the redux store (Initial state)
     const data = useSelector(state => state.data, shallowEqual);  
 
-    // Access job listing counts from data object and pass it as props to the visualisations for chart titles
-    const jobListingCount = data.summaryStats.total_job_listings;
-
     // For handling interactivity between PieChart.js and HorizontalBarChart.js
     const [selectedEducationLevel, setSelectedEducationLevel] = useState('Bachelors');
-    const [selectedColor, setSelectedColor] = useState('#FF6384');
+    const [selectedColor, setSelectedColor] = useState('rgba(251, 183, 244, 1)');
     const handleSliceClick = (educationLevel, color) => {
         setSelectedEducationLevel(educationLevel);
         setSelectedColor(color);
@@ -52,17 +49,17 @@ const Dashboard = () => {
                     </div>
                     <div className="lg:col-span-3 flex-col">
                         <div className="h-full">
-                            <SkillsBarChart data={data.skills} jobListingCount={jobListingCount} jobTitle={selectedJobTitle} />
+                            <SkillsBarChart data={data.skills} jobTitle={selectedJobTitle} />
                         </div>
                     </div>
                     <div className="lg:col-span-3 flex-col">
                         <div className="h-full">
-                            <ToolsBarChart data={data.tools} jobListingCount={jobListingCount} jobTitle={selectedJobTitle} />
+                            <ToolsBarChart data={data.tools} jobTitle={selectedJobTitle} />
                         </div>
                     </div>
                     <div className="lg:col-span-3 flex-col">
                         <div className="h-full">
-                            <PieChart data={data.education_levels} jobListingCount={jobListingCount} onSliceClick={handleSliceClick} />
+                            <DoughnutChart data={data.education_levels} onSliceClick={handleSliceClick} />
                         </div>
                     </div>
                     <div className="lg:col-span-3 flex-col">

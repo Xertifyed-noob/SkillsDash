@@ -6,6 +6,7 @@ import Dashboard from './components/Dashboard';
 const App = () => {
   return (
     <Provider store={store}>
+      <div className="background"></div>
       <div className="container">
         <Dashboard />
       </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import { createRoot }from 'react-dom/client';
 import './index.css';
 import App from './App';
-import './visualsConfig'; // Register Chart.js components globally
+import './chartConfig'; 
 
 const container = document.getElementById('root');
 const root = createRoot(container);

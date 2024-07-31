@@ -1,16 +1,16 @@
 import React, { memo } from 'react';
-import { Pie } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 
-const PieChart = memo(({ data, onSliceClick, jobListingCount }) => {
+const DoughnutChart = memo(({ data, onSliceClick }) => {
 
     // Data should be an array of education level data (data.education_levels in Dashboard.js)
-    console.log('PieChart Data:', data);
+    console.log('DoughnutChart Data:', data);
 
     // Define a consistent color mapping for the education levels
     const colorMapping = {
-        'Bachelors': '#FF6384', 
-        'Masters': '#FFCE56',
-        'PhD': '#36A2EB' 
+        'Bachelors': 'rgba(251, 183, 244, 1)', 
+        'Masters': 'rgba(160, 129, 228, 1)',
+        'PhD': 'rgba(63, 140, 255, 1)' 
     };
 
     // Ensure the data is always ordered as Bachelors, Masters, PhD
@@ -33,46 +33,59 @@ const PieChart = memo(({ data, onSliceClick, jobListingCount }) => {
                 label: 'Education Levels',
                 data: percentages,
                 backgroundColor: orderedData.map(item => colorMapping[item.education_level]),
-                hoverBackgroundColor: orderedData.map(item => colorMapping[item.education_level])
+                hoverBackgroundColor: orderedData.map(item => colorMapping[item.education_level]),
+                borderWidth: 0,
             }
         ]
     };
 
     const options = {
         responsive: true,
+        cutout: '60%',
         plugins: {
             legend: {
                 display: true,
-                position: 'top',
+                position: 'bottom',
                 labels: {
+                    padding: 30,
                     generateLabels: (chart) => {
-                        return ['Bachelors', 'Masters', 'PhD'].map((label, index) => ({
+                        return ['Bachelors', 'Masters', 'PhD'].map((label) => ({
                             text: label,
                             fontColor: '#D1D5DB',
                             fillStyle: colorMapping[label],
                             hidden: false,
-                            index: labels.indexOf(label)
+                            index: labels.indexOf(label),
+                            borderWidth: 0,
+                            borderRadius: 5
                         }));
                     }
                 }
             },
             title: {
                 display: true,
-                text: `Education Level distribution across ${jobListingCount} Jobs`,
-                color: '#D1D5DB',
+                text: `Education Level distribution`,
+                color: '#ffffff',
                 font: {
-                    size: 16
+                    size: 18,
+                    weight: 'bold',
+                },
+                padding: {
+                    bottom: 30
                 }
             },
             tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.10)',
+                borderColor: 'rgba(255, 255, 255, 0.2)',
+                borderWidth: 1,
+                padding: {
+                    top: 10,
+                    bottom: 10,
+                    left: 20,
+                    right: 20
+                },
                 callbacks: {
                     label: function(context) {
-                        let label = context.label || '';
-                        if (label) {
-                            label += ': ';
-                        }
-                        label += parseFloat(context.raw).toFixed(1) + '%';
-                        return label;
+                        return ` ${parseFloat(context.raw).toFixed(1)}%`;
                     },
                     labelColor: function(context) {
                         return {
@@ -96,7 +109,7 @@ const PieChart = memo(({ data, onSliceClick, jobListingCount }) => {
         }
     };
 
-    return <Pie data={chartData} options={options} />;
+    return <Doughnut data={chartData} options={options} />;
 });
 
-export default PieChart;
+export default DoughnutChart;
