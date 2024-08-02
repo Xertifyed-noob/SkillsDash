@@ -62,16 +62,16 @@ const Dashboard = () => {
                             <DoughnutChart data={data.education_levels} onSliceClick={handleSliceClick} />
                         </div>
                     </div>
-                    <div className="lg:col-span-3 flex-col">
-                        <div className="h-full">
+                    <div className="lg:col-span-3 flex-col flex">
+                        <div className="h-auto">
                             <HorizontalBarChart data={data.fields_of_study} selectedEducationLevel={selectedEducationLevel} selectedColor={selectedColor} />
+                        </div>
+                        <div className="flex-col">
+                            <JobFilter jobtitles={jobTitles} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} />
                         </div>
                     </div>
                     <div className="lg:col-span-6 flex">
                         <ThreeDModel />
-                    </div>
-                    <div className="lg:col-span-6 flex">
-                        <JobFilter jobtitles={jobTitles} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} />
                     </div>
                 </div>
             </div>

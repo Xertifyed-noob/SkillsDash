@@ -1,9 +1,8 @@
-/* Applies global styles to application (not including charts) */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Global styles */
 * {
   margin: 0;
   padding: 0;
@@ -15,7 +14,7 @@
 body, html {
   @apply h-full;
   overflow: hidden;
-  background-color: rgba(46, 56, 88, 1);
+  background: rgba(46, 56, 88, 1)
 }
 
 .background {
@@ -48,4 +47,28 @@ body, html {
   backdrop-filter: blur(10px);
   border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+}
+
+
+/* Reusable utility classes */
+.glass-1 {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.01));
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.15);
+}
+
+.glass-2 {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(10px);
+  border-radius: 5px;
+}
+
+.hover-highlight:hover {
+  background: linear-gradient(to right, rgb(161, 68, 201), rgb(71, 71, 203));
+  color: white;
+  font-weight: bold;
 }

@@ -34,7 +34,7 @@ const DoughnutChart = memo(({ data, onSliceClick }) => {
                 data: percentages,
                 backgroundColor: orderedData.map(item => colorMapping[item.education_level]),
                 hoverBackgroundColor: orderedData.map(item => colorMapping[item.education_level]),
-                borderWidth: 0,
+                borderWidth: 0
             }
         ]
     };

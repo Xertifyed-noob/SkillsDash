@@ -70,7 +70,10 @@ const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }
                     stepSize: 5
                 },
                 grid: {
-                    color: 'rgba(255, 255, 255, 0.2)'
+                    color: 'rgba(255, 255, 255, 0.1)',
+                },
+                border: {
+                    color: 'transparent'
                 }
             },
             y: {

@@ -5,11 +5,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#4F46E5', // Example primary color
-        secondary: '#818CF8', // Example secondary color
-        accent: '#D946EF', // Example accent color
-        background: '#1E1E2F', // Dark background color
-        surface: '#2D2D3A', // Surface color for cards, etc.
+        primary: '#4F46E5', 
+        secondary: '#818CF8', 
+        accent: '#D946EF', 
+        background: '#1E1E2F',
+        surface: '#2D2D3A', 
       },
     },
   },
