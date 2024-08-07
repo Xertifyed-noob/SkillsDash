@@ -81,6 +81,12 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
+        layout: {
+            padding: {
+              top: 25,
+            },
+        },
         plugins: {
             legend: {
                 display: false
@@ -95,7 +101,7 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
                 },
                 align: 'start',
                 padding: {
-                    bottom: 40 
+                    bottom: 25 
                 }   
             },
             tooltip: {
@@ -231,7 +237,7 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
     };
 
     return (
-        <div>
+        <div className="h-full w-full">
             {!drilldownData ? (
                 <Bar data={chartData} options={options} />
             ) : (

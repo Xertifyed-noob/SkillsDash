@@ -17,11 +17,11 @@ const JobFilter = ({ jobtitles, selectedJob, onChange }) => {
 
     return (
         <div className="relative inline-block text-left w-full mt-20">
-            <div className="mb-2 text-lg font-medium text-white">Select Job Title</div>
+            <div className="mb-2 text-lg font-md text-white">Select Job Title</div>
             <div>
                 <button
                     type="button"
-                    className="glass-2 w-full text-gray-200 text-left py-3 px-4 rounded-md focus:outline-none cursor-pointer"
+                    className="glass-2 w-full text-gray-200 text-left py-3 px-4 rounded-xl focus:outline-none cursor-pointer"
                     onClick={handleToggle}
                 >
                     <span className={`${isOpen ? 'italic text-gray-400' : ''}`}>
@@ -36,11 +36,11 @@ const JobFilter = ({ jobtitles, selectedJob, onChange }) => {
             </div>
 
             {isOpen && (
-                <div className="glass-2 origin-top-right absolute right-0 mt-2 w-full rounded-md z-10">
+                <div className="glass-2 origin-top-right absolute right-0 mt-2 w-full rounded-xl z-10">
                     <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         <div
                         onClick={() => handleSelect('')}
-                        className="cursor-pointer select-none relative py-3 px-4 text-gray-200 hover-highlight rounded-md"
+                        className="cursor-pointer select-none relative mx-2 my-1 py-3 px-4 text-gray-200 hover-highlight rounded-xl"
                         role="menuitem"
                         >
                             <span className="font-normal block truncate">All</span>
@@ -49,7 +49,7 @@ const JobFilter = ({ jobtitles, selectedJob, onChange }) => {
                             <div
                                 key={index}
                                 onClick={() => handleSelect(job)}
-                                className="cursor-pointer select-none relative py-3 px-4 text-gray-200 hover-highlight rounded-md"
+                                className="cursor-pointer select-none relative mx-2 my-1 py-3 px-4 text-gray-200 hover-highlight rounded-xl"
                                 role="menuitem"
                             >
                                 <span className={`font-normal block truncate ${job === selectedJob ? 'font-bold' : ''}`}>

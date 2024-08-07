@@ -41,39 +41,46 @@ const Dashboard = () => {
 
     // Renders and passes data as props to sub-components
     return (
-        <div className="dashboard-container">
-            <div className="container mx-auto h-full">
-                <div className="grid grid-cols-1 lg:grid-cols-6 gap-6 h-full">
-                    <div className="lg:col-span-6 flex flex-col">
+        /* Dashboard container */
+        <div className="w-[95%] h-[90vh] p-8 flex flex-col mx-auto my-auto glass-1">
+            {/* Dashboard content */}
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 h-full">
+                {/* Left partition */}
+                <div className="lg:col-span-1 flex flex-col pr-8 relative">
+                    <div className="logo mb-11">
+                        ...
+                    </div>
+                    <JobFilter jobtitles={jobTitles} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} />
+                    <div className="absolute -top-8 inset-y-0 right-0 border-r-2 border-r-[rgba(255,255,255,0.15)]"></div>
+                </div>
+                {/* Right partition */}
+                <div className="lg:col-span-4 grid grid-rows-[auto,1fr,1fr] ">
+                    <div className="">
                         <SummaryStats stats={data.summaryStats} />
                     </div>
-                    <div className="lg:col-span-3 flex-col">
-                        <div className="h-full">
-                            <SkillsBarChart data={data.skills} jobTitle={selectedJobTitle} />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div className="p-4 flex items-center justify-center">
+                            <div className="flex-grow w-full h-full">
+                                <SkillsBarChart data={data.skills} jobTitle={selectedJobTitle} />
+                            </div>
                         </div>
-                    </div>
-                    <div className="lg:col-span-3 flex-col">
-                        <div className="h-full">
-                            <ToolsBarChart data={data.tools} jobTitle={selectedJobTitle} />
-                        </div>
-                    </div>
-                    <div className="lg:col-span-3 flex-col">
-                        <div className="h-full">
+                        <div className="p-4 flex items-center justify-center">
                             <DoughnutChart data={data.education_levels} onSliceClick={handleSliceClick} />
                         </div>
                     </div>
-                    <div className="lg:col-span-3 flex-col flex">
-                        <div className="h-auto">
-                            <HorizontalBarChart data={data.fields_of_study} selectedEducationLevel={selectedEducationLevel} selectedColor={selectedColor} />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div className="p-4 flex items-center justify-center">
+                            <div className="flex-grow w-full h-full">
+                                <ToolsBarChart data={data.tools} jobTitle={selectedJobTitle} />
+                            </div>
                         </div>
-                        <div className="flex-col">
-                            <JobFilter jobtitles={jobTitles} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} />
+                        <div className="p-4 flex items-center justify-center">
+                            <div className="flex-grow w-full h-[90%]">
+                                <HorizontalBarChart data={data.fields_of_study} selectedEducationLevel={selectedEducationLevel} selectedColor={selectedColor} />
+                            </div>
                         </div>
                     </div>
-                    <div className="lg:col-span-6 flex">
-                        <ThreeDModel />
-                    </div>
-                </div>
+                </div> 
             </div>
         </div>
     );

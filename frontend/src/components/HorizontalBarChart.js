@@ -23,7 +23,8 @@ const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }
                 data: proportions,
                 backgroundColor: selectedColor,
                 borderColor: selectedColor,
-                borderRadius: 5
+                borderRadius: 5,
+                barThickness: 40,
             }
         ]
     };
@@ -31,13 +32,14 @@ const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }
     const options = {
         indexAxis: 'y', 
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 display: false
             },
             title: {
                 display: true,
-                text: `Top fields of Study for ${selectedEducationLevel} Degree`,
+                text: `Top Fields of Study (${selectedEducationLevel})`,
                 color: '#ffffff',
                 font: {
                     size: 18,
@@ -80,6 +82,11 @@ const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }
                 title: {
                     display: false
                 },
+                ticks: {
+                    font: {
+                        size: 12 
+                    },
+                },
                 grid: {
                     display: false
                 }
@@ -87,7 +94,11 @@ const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }
         }
     };
 
-    return <Bar data={chartData} options={options} />;
+    return (
+        <div className="w-full h-full">
+          <Bar data={chartData} options={options} />
+        </div>
+      );    
 });
 
 export default HorizontalBarChart;
