@@ -7,7 +7,6 @@ import DoughnutChart from './DoughnutChart';
 import HorizontalBarChart from './HorizontalBarChart';
 import SummaryStats from './SummaryStats';
 import JobFilter from './JobFilter';
-import ThreeDModel from './ThreeDModel';
 
 const Dashboard = () => {
     // Retrieves the dispatch function to send actions to the redux store
@@ -42,15 +41,17 @@ const Dashboard = () => {
     // Renders and passes data as props to sub-components
     return (
         /* Dashboard container */
-        <div className="w-[95%] h-[90vh] p-8 flex flex-col mx-auto my-auto glass-1">
+        <div className="w-[95%] h-[90vh] pr-8 py-8 flex flex-col mx-auto my-auto glass-1">
             {/* Dashboard content */}
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 h-full">
                 {/* Left partition */}
-                <div className="lg:col-span-1 flex flex-col pr-8 relative">
-                    <div className="logo mb-11">
-                        ...
+                <div className="lg:col-span-1 flex flex-col relative">
+                    <div className="logo mt-2 flex items-center justify-center">
+                        <img src="/logo.png" alt="Logo" className="h-20 w-auto py-2" />
                     </div>
-                    <JobFilter jobtitles={jobTitles} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} />
+                    <div className='px-4 -mt-5'>
+                        <JobFilter jobtitles={jobTitles} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} />
+                    </div>
                     <div className="absolute -top-8 inset-y-0 right-0 border-r-2 border-r-[rgba(255,255,255,0.15)]"></div>
                 </div>
                 {/* Right partition */}
