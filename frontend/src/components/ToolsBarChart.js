@@ -63,7 +63,7 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
     // Calculate total count to compute proportions
     const totalCount = data.reduce((sum, item) => sum + item.count, 0);
     // Extract labels (tools) and data (proportions) for the top 10 tools
-    const labels = sortedData.map(item => item.tool);
+    const labels = sortedData.map(item => item.tool.split(' '));
     const proportions = sortedData.map(item => (item.count / totalCount) * 100);
 
     const chartData = {
@@ -80,8 +80,6 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
     };
 
     const options = {
-        responsive: true,
-        maintainAspectRatio: false,
         layout: {
             padding: {
               top: 25,
@@ -111,9 +109,13 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
                 position: 'nearest',
                 yAlign: 'bottom', 
                 callbacks: {
+                    title: function(tooltipItems) {
+                        let title = tooltipItems[0].label.replace(/,/g, ' ');
+                        return title;
+                    },
                     label: function(context) {
                         return ` ${parseFloat(context.raw).toFixed(1)}%`;
-                    },
+                    }
                 }
             }
         },
@@ -135,13 +137,13 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
                     maxRotation: 0, 
                     minRotation: 0,
                     font: {
-                        size: 12 
+                        size: 12
                     },
                     autoSkip: false,
                 },
                 grid: {
                     display: false 
-                }
+                },
             },
             y: {
                 title: {
@@ -176,7 +178,6 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
     } : null;
 
     const drilldownOptions = {
-        responsive: true,
         plugins: {
             legend: {
                 display: false
@@ -237,7 +238,7 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
     };
 
     return (
-        <div className="h-full w-full">
+        <div className="h-full w-full max-w-full max-h-full">
             {!drilldownData ? (
                 <Bar data={chartData} options={options} />
             ) : (

@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 
 const StatBox = ({ title, value }) => (
-    <div className="glass-1 text-white p-4 rounded-lg shadow-md text-center">
-        <h3 className="text-xl font-bold mb-2">{title}</h3>
-        <p className="text-2xl font-bold">{value}</p>
+    <div className="glass-1 flex flex-col items-center justify-center text-white p-4 rounded-lg shadow-md h-full">
+        <h3 className="text-center text-xl font-bold mb-2">{title}</h3>
+        <p className="text-center text-2xl font-bold">{value}</p>
     </div>
 );
 

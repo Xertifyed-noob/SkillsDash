@@ -16,7 +16,6 @@ import {
 } from 'chart.js';
 import { MatrixElement } from 'chartjs-chart-matrix';
 
-
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -36,6 +35,12 @@ ChartJS.register(
 ChartJS.defaults.font.family = "'Eudoxus Sans', sans-serif";
 ChartJS.defaults.color = 'rgba(209, 213, 219, 1)'; 
 ChartJS.defaults.font.size = 14;
+
+// Responsiveness settings
+ChartJS.defaults.responsive = true;
+ChartJS.defaults.maintainAspectRatio = false; 
+
+
 
 
 

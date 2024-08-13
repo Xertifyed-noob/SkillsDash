@@ -31,8 +31,6 @@ const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }
 
     const options = {
         indexAxis: 'y', 
-        responsive: true,
-        maintainAspectRatio: false,
         plugins: {
             legend: {
                 display: false
@@ -46,7 +44,8 @@ const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }
                     weight: 'bold',
                 },
                 padding: {
-                    bottom: 40 
+                    top: 30,
+                    bottom: 15
                 }
             },
             tooltip: {
@@ -95,7 +94,7 @@ const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }
     };
 
     return (
-        <div className="w-full h-full">
+        <div className="w-full h-full max-w-full max-h-full">
           <Bar data={chartData} options={options} />
         </div>
       );    

@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
+
 const DoughnutChart = memo(({ data, onSliceClick }) => {
 
     // Data should be an array of education level data (data.education_levels in Dashboard.js)
@@ -40,7 +41,6 @@ const DoughnutChart = memo(({ data, onSliceClick }) => {
     };
 
     const options = {
-        responsive: true,
         cutout: '60%',
         plugins: {
             legend: {
@@ -70,7 +70,8 @@ const DoughnutChart = memo(({ data, onSliceClick }) => {
                     weight: 'bold',
                 },
                 padding: {
-                    bottom: 30
+                    top: 35,
+                    bottom: 20
                 }
             },
             tooltip: {
@@ -109,7 +110,11 @@ const DoughnutChart = memo(({ data, onSliceClick }) => {
         }
     };
 
-    return <Doughnut data={chartData} options={options} />;
+    return (
+        <div className="w-full h-full max-w-full max-h-full">
+            <Doughnut data={chartData} options={options} />
+        </div>
+    )
 });
 
 export default DoughnutChart;

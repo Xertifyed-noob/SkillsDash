@@ -58,16 +58,18 @@ body, html {
   border: 1px solid rgba(255, 255, 255, 0);
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   border-left: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 10px 10px 3px rgba(0, 0, 0, 0.3);
 }
 
 .glass-2 {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
   backdrop-filter: blur(10px);
+  box-shadow: 10px 10px 3px rgba(0, 0, 0, 0.3);
 }
 
 .hover-highlight:hover {
   background: rgb(143, 128, 252, 1);
   color: white;
   font-weight: bold;
+  box-shadow: 10px 10px 3px rgba(0, 0, 0, 0.15);
 }
