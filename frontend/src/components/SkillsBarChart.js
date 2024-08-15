@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useCallback} from 'react';
+import React, { memo, useState, useEffect, useCallback } from 'react';
 import { Bar } from 'react-chartjs-2'
 import { useDispatch } from 'react-redux';
 import { fetchSkillIndustryData } from '../redux/actions';
@@ -63,7 +63,7 @@ const SkillsBarChart = memo(({ data, jobTitle }) => {
     // Calculate total count to compute proportions
     const totalCount = data.reduce((sum, item) => sum + item.count, 0);
     // Extract labels (skills) and data (proportions) for the top 10 skills
-    const labels = sortedData.map(item => item.skill);
+    const labels = sortedData.map(item => item.skill.split(' '));
     const proportions = sortedData.map(item => (item.count / totalCount) * 100);
 
     const chartData = {
@@ -80,7 +80,11 @@ const SkillsBarChart = memo(({ data, jobTitle }) => {
     };
 
     const options = {
-        responsive: true,
+        layout: {
+            padding: {
+              top: 35,
+            },
+        },
         plugins: {
             legend: {
                 display: false
@@ -95,7 +99,7 @@ const SkillsBarChart = memo(({ data, jobTitle }) => {
                 },
                 align: 'start',
                 padding: {
-                    bottom: 40 
+                    bottom: 25, 
                 }
             },
             tooltip: {
@@ -105,9 +109,13 @@ const SkillsBarChart = memo(({ data, jobTitle }) => {
                 position: 'nearest',
                 yAlign: 'bottom', 
                 callbacks: {
+                    title: function(tooltipItems) {
+                        let title = tooltipItems[0].label.replace(/,/g, ' ');
+                        return title;
+                    },
                     label: function(context) {
                         return ` ${parseFloat(context.raw).toFixed(1)}%`;
-                    },
+                    }
                 }
             }
         },
@@ -129,9 +137,17 @@ const SkillsBarChart = memo(({ data, jobTitle }) => {
                     maxRotation: 0,
                     minRotation: 0,
                     font: {
-                        size: 12 
+                        size: 12
                     },
                     autoSkip: false,
+                    callback: function(value) {
+                        const screenWidth = window.innerWidth;
+                        const rotation = (screenWidth >= 900 && screenWidth <= 1300) || screenWidth < 550 ? 45 : 0;
+                        this.options.ticks.maxRotation = rotation;
+                        this.options.ticks.minRotation = rotation;
+
+                        return this.getLabelForValue(value);
+                    }
                 },
                 grid: {
                     display: false,
@@ -170,7 +186,6 @@ const SkillsBarChart = memo(({ data, jobTitle }) => {
     } : null;
 
     const drilldownOptions = {
-        responsive: true,
         plugins: {
             legend: {
                 display: false
@@ -234,7 +249,7 @@ const SkillsBarChart = memo(({ data, jobTitle }) => {
     };
 
     return (
-        <div>
+        <div className="w-full h-full max-w-full max-h-full">
             {!drilldownData ? (
                 <Bar data={chartData} options={options} />
             ) : (

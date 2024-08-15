@@ -16,19 +16,19 @@ const JobFilter = ({ jobtitles, selectedJob, onChange }) => {
     };
 
     return (
-        <div className="relative inline-block text-left w-full mt-20">
-            <div className="mb-2 text-lg font-medium text-white">Select Job Title</div>
+        <div className="relative inline-block w-full mt-20 text-left">
+            <div className="mb-2 text-lg font-md text-white">Select Job Title</div>
             <div>
                 <button
                     type="button"
-                    className="glass-2 w-full text-gray-200 text-left py-3 px-4 rounded-md focus:outline-none cursor-pointer"
+                    className="w-full px-4 py-3 text-left text-gray-200 rounded-xl cursor-pointer focus:outline-none glass-2"
                     onClick={handleToggle}
                 >
                     <span className={`${isOpen ? 'italic text-gray-400' : ''}`}>
                         {isOpen ? 'Select Job Title' : selectedJob || 'All'}
                     </span>
                     <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                        <svg className={`w-5 h-5 ${isOpen ? 'transform rotate-180' : ''} text-gray-400`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <svg className={`w-5 h-5 text-gray-400 ${isOpen ? 'transform rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M5.23 7.72a.75.75 0 011.06-.02L10 11.176l3.71-3.456a.75.75 0 111.04 1.084l-4.25 4a.75.75 0 01-1.04 0l-4.25-4a.75.75 0 01-.02-1.06z" clipRule="evenodd" />
                         </svg>
                     </span>
@@ -36,23 +36,23 @@ const JobFilter = ({ jobtitles, selectedJob, onChange }) => {
             </div>
 
             {isOpen && (
-                <div className="glass-2 origin-top-right absolute right-0 mt-2 w-full rounded-md z-10">
+                <div className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-xl glass-2">
                     <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         <div
                         onClick={() => handleSelect('')}
-                        className="cursor-pointer select-none relative py-3 px-4 text-gray-200 hover-highlight rounded-md"
+                        className="relative px-4 py-3 mx-2 my-1 text-gray-200 rounded-xl cursor-pointer select-none hover-highlight"
                         role="menuitem"
                         >
-                            <span className="font-normal block truncate">All</span>
+                            <span className="block font-normal truncate">All</span>
                         </div>
                         {jobtitles.map((job, index) => (
                             <div
                                 key={index}
                                 onClick={() => handleSelect(job)}
-                                className="cursor-pointer select-none relative py-3 px-4 text-gray-200 hover-highlight rounded-md"
+                                className="relative px-4 py-3 mx-2 my-1 text-gray-200 rounded-xl cursor-pointer select-none hover-highlight"
                                 role="menuitem"
                             >
-                                <span className={`font-normal block truncate ${job === selectedJob ? 'font-bold' : ''}`}>
+                                <span className={`block font-normal truncate ${job === selectedJob ? 'font-bold' : ''}`}>
                                     {job}
                                 </span>
                             </div>

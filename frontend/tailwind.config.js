@@ -1,15 +1,18 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'], // Add the purge paths to remove unused styles in production
-  darkMode: 'class', // Enable dark mode
+  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'], 
+  darkMode: 'class', 
   theme: {
     extend: {
       colors: {
-        primary: '#4F46E5', 
-        secondary: '#818CF8', 
-        accent: '#D946EF', 
-        background: '#1E1E2F',
-        surface: '#2D2D3A', 
+        'title-text': 'rgba(255, 255, 255, 1)',
+        'non-title-text': 'rgba(209, 213, 219, 1)',
+      },
+      screens: {
+        'md': '900px',
+        'lg': '1100px',
+        'h-md': { 'raw': '(min-height: 500px)' },
+        'h-lg': { 'raw': '(min-height: 1000px)' },
       },
     },
   },

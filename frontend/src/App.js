@@ -8,7 +8,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <div className="background"></div>
-      <div className="container">
+      <div className="wrapper">
         <Dashboard />
       </div>
     </Provider>
