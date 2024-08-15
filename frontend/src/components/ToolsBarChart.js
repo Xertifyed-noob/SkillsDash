@@ -140,6 +140,15 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
                         size: 12
                     },
                     autoSkip: false,
+                    callback: function(value) {
+                        const screenWidth = window.innerWidth;
+                        const rotation = (screenWidth >= 900 && screenWidth <= 1300) || screenWidth < 550 ? 45 : 0;
+    
+                        this.options.ticks.maxRotation = rotation;
+                        this.options.ticks.minRotation = rotation;
+    
+                        return this.getLabelForValue(value);
+                    },
                 },
                 grid: {
                     display: false 

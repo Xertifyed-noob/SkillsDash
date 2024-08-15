@@ -41,37 +41,35 @@ const Dashboard = () => {
     // Renders and passes data as props to sub-components
     return (
         /* Dashboard container */
-        <div className="glass-1 flex flex-col w-[95%] min-h-[90vh] lg:min-h-[90vh] mx-auto my-[5vh] pr-8 pl-8 lg:pl-0 py-8">
+        <div className=" mx-auto my-[5vh] flex flex-col w-[95%] min-h-[90vh] lg:min-h-[90vh] pt-8 pr-8 pl-8 lg:pl-0 glass-1">
             {/* Dashboard content */}
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 h-full">
                 {/* Left partition */}
-                <div className="lg:col-span-1 flex flex-col relative">
-                    <div className="logo mt-2 flex items-center justify-center ">
-                        <img src="/logo.png" alt="Logo" className="h-20 w-auto pl-2 py-2" />
+                <div className="relative flex flex-col lg:col-span-1">
+                    <div className="flex items-center justify-center p-4 mt-2 logo">
+                        <img src="/logo.png" alt="Logo" className="h-20 w-auto py-2 pl-2" />
                     </div>
-                    <div className='pl-6 pr-4 -mt-12 lg:-mt-5'>
+                    <div className='-mt-12 lg:-mt-5 pr-4 pl-6'>
                         <JobFilter jobtitles={jobTitles} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} />
                     </div>
-                    <div className="absolute -top-8 -bottom-8 inset-y-0 -right-2 lg:border-r-2 border-r-[rgba(255,255,255,0.15)]"></div>
+                    <div className="absolute inset-y-0 -top-8 -right-2 border-r-[rgba(255,255,255,0.15)] lg:border-r-2"></div>
                 </div>
                 {/* Right partition */}
-                <div className="lg:col-span-4 grid grid-rows-[auto,1fr,1fr]">
+                <div className="grid grid-rows-[auto,1fr,1fr] lg:col-span-4">
                     <div className="">
                         <SummaryStats stats={data.summaryStats} />
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div className="p-4 flex items-center justify-center w-full h-96 md:h-[47.5vh] max-w-full max-h-full order-1 max-md:order-1">
+                    <div className="grid grid-cols-1 md:grid-cols-2 row-span-2 gap-3">
+                        <div className="order-1 md:order-1 flex items-center justify-center p-4 w-full h-96 h-md:h-[55vh] h-lg:h-[39vh]">
                             <SkillsBarChart data={data.skills} jobTitle={selectedJobTitle} />
                         </div>
-                        <div className="p-4 flex items-center justify-center h-96 md:h-[47.5vh] max-w-full max-h-full order-2 max-md:order-3">
+                        <div className="order-3 md:order-2 flex items-center justify-center p-4 h-96 h-md:h-[55vh] h-lg:h-[39vh]">
                             <DoughnutChart data={data.education_levels} onSliceClick={handleSliceClick} />
                         </div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div className="p-4 flex items-center justify-center w-full h-96 md:h-[47.5vh] max-w-full max-h-full order-3 max-md:order-2">
+                        <div className="order-2 md:order-3 flex items-center justify-center p-4 w-full h-96 h-md:h-[55vh] h-lg:h-[39vh]">
                             <ToolsBarChart data={data.tools} jobTitle={selectedJobTitle} />
                         </div>
-                        <div className="p-4 flex items-center justify-center w-full h-96 md:h-[47.5vh] max-w-full max-h-full order-4 max-md:order-4">
+                        <div className="order-4 md:order-4 flex items-center justify-center p-4 w-full h-96 h-md:h-[55vh] h-lg:h-[39vh]">
                             <HorizontalBarChart data={data.fields_of_study} selectedEducationLevel={selectedEducationLevel} selectedColor={selectedColor} />
                         </div>
                     </div>
