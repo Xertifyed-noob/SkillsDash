@@ -16,7 +16,7 @@ const JobFilter = ({ jobtitles, selectedJob, onChange }) => {
     };
 
     return (
-        <div className="relative inline-block w-full mt-20 text-left">
+        <div className="relative inline-block w-full mt-12 text-left">
             <div className="mb-2 text-lg font-md text-white">Select Job Title</div>
             <div>
                 <button

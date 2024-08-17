@@ -44,7 +44,7 @@ const HorizontalBarChart = memo(({ data, selectedEducationLevel, selectedColor }
                     weight: 'bold',
                 },
                 padding: {
-                    top: 30,
+                    top: 25,
                     bottom: 15
                 }
             },

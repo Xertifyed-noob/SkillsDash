@@ -24,11 +24,12 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
             const totalCount = [...response.toolIndustries].reduce((sum, item) => sum + item.count, 0);
             const drilldownDataProportions = sortedDrilldownData.map(item => ({
                 ...item,
+                industry: item.industry === 'Information Technology' ? 'IT' : item.industry,
                 proportion: (item.count / totalCount) * 100
             }));
             // Update the state with processed drilldown data and the drilldown chart title
             setDrilldownData(drilldownDataProportions);
-            setDrilldownTitle(`Distribution of Tool (${tool}) across Industries`);
+            setDrilldownTitle(`${String(tool).charAt(0).toUpperCase() + String(tool).slice(1)} distribution`);
         });
     }, [dispatch]);
 
@@ -48,8 +49,10 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
 
     // When a bar in the bar chart is clicked, update skill state, and fetch drilldown data for clicked skill
     const handleClick = (tool) => {
-        setCurrentTool(tool);
-        fetchAndSetDrilldownData(tool, jobTitle);
+        // Check if the clicked tool contains any spaces (tool array has more than one element), if yes, join the elements with spaces
+        const toolWithSpaces = Array.isArray(tool) && tool.length > 1 ? [tool.join(' ')] : tool;
+        setCurrentTool(toolWithSpaces);
+        fetchAndSetDrilldownData(toolWithSpaces, jobTitle);
     };
 
     // When revert button is clicked, reset the drilldown data
@@ -74,6 +77,8 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
                 data: proportions,
                 backgroundColor: 'rgba(186, 245, 244, 1)',
                 borderColor: 'rgba(186, 245, 244, 1)',
+                hoverBackgroundColor: 'rgba(66, 247, 244, 1)', 
+                hoverBorderColor: 'rgba(66, 247, 244, 1)',  
                 borderRadius: 5
             }
         ]
@@ -103,7 +108,7 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
                 }   
             },
             tooltip: {
-                backgroundColor: 'rgba(255, 255, 255, 0.10)',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
                 borderColor: 'rgba(255, 255, 255, 0.2)',
                 borderWidth: 1,
                 position: 'nearest',
@@ -142,7 +147,7 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
                     autoSkip: false,
                     callback: function(value) {
                         const screenWidth = window.innerWidth;
-                        const rotation = (screenWidth >= 900 && screenWidth <= 1300) || screenWidth < 550 ? 45 : 0;
+                        const rotation = (screenWidth >= 900 && screenWidth <= 1300) || screenWidth < 600 ? 35 : 0;
     
                         this.options.ticks.maxRotation = rotation;
                         this.options.ticks.minRotation = rotation;
@@ -174,38 +179,36 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
         }
     };
 
-    const drilldownChartData = drilldownData ? {
-        labels: drilldownData.map(item => item.industry),
-        datasets: [
-            {
-                label: 'Industries',
-                data: drilldownData.map(item => item.proportion),
-                backgroundColor: 'rgba(153, 102, 255, 1)',
-                borderColor: 'rgba(153, 102, 255, 1)',
-            }
-        ]
-    } : null;
+    const drilldownChartData = drilldownData 
+        ? {
+            labels: drilldownData.map((item) => {
+                if (item.industry.includes('&')) {
+                    const [before, after] = item.industry.split(' & ');
+                    return [`${before} &`, after];
+                }
+                return item.industry.split(' ');
+            }),
+            datasets: [
+                {
+                    label: 'Industries',
+                    data: drilldownData.map(item => item.proportion),
+                    backgroundColor: 'rgba(10, 228, 252, 1)',
+                    borderColor: 'rgba(10, 228, 252, 1)',
+                    hoverBackgroundColor: 'rgba(10, 190, 252, 1)',
+                    hoverBorderColor: 'rgba(10, 190, 252, 1)',  
+                    borderRadius: 7
+                },
+            ],
+        } 
+    : null;
 
     const drilldownOptions = {
+        ...options,
         plugins: {
-            legend: {
-                display: false
-            },
+            ...options.plugins,
             title: {
-                display: true,
+                ...options.plugins.title,
                 text: drilldownTitle,
-            },
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        let label = context.dataset.label || '';
-                        if (label) {
-                            label += ': ';
-                        }
-                        label += parseFloat(context.parsed.y).toFixed(1) + '%';
-                        return label;
-                    }
-                }
             }
         },
         onClick: null,
@@ -213,41 +216,29 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
             event.native.target.style.cursor = 'default';
         },
         scales: {
+            ...options.scales,
             x: {
-                title: {
-                    display: true,
-                    text: 'Industries',
-                    font: {
-                        size: 16
-                    }
+                ...options.scales.x,
+                ticks: {
+                    ...options.scales.x.ticks,
+                    callback: function(value) {
+                        const screenWidth = window.innerWidth;
+                        const rotation = (screenWidth >= 900 && screenWidth <= 1900) || screenWidth < 800 ? 35 : 0;
+                        this.options.ticks.maxRotation = rotation;
+                        this.options.ticks.minRotation = rotation;
+
+                        return this.getLabelForValue(value); 
+                    }, 
                 },
-                grid: {
-                    display: false
-                }
             },
             y: {
-                title: {
-                    display: true,
-                    text: 'Percentage',
-                    font: {
-                        size: 16
-                    }
-                },
-                ticks: {
-                    callback: function(value) {
-                        return value.toFixed(0) + '%';
-                    },
-                    stepSize: 5
-                },
-                grid: {
-                    color: 'rgba(255, 255, 255, 0.2)'
-                }
+                ...options.scales.y,
             }
         }
     };
 
     return (
-        <div className="h-full w-full max-w-full max-h-full">
+        <div className="relative h-full w-full max-w-full max-h-full">
             {!drilldownData ? (
                 <Bar data={chartData} options={options} />
             ) : (
@@ -255,7 +246,8 @@ const ToolsBarChart = memo(({ data, jobTitle }) => {
                     <Bar data={drilldownChartData} options={drilldownOptions} />
                     <button
                         onClick={handleRevert}
-                        className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark focus:outline-none"
+                        className="absolute top-4 right-2 px-4 py-1 text-white tracking-wide focus:outline-none hover-highlight glass-1"
+                        style={{ borderRadius: '12px', boxShadow: '10px 10px 3px rgba(0, 0, 0, 0.2)' }}
                     >
                         Revert
                     </button>
