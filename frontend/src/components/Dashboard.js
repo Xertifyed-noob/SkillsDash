@@ -7,6 +7,8 @@ import DoughnutChart from './DoughnutChart';
 import HorizontalBarChart from './HorizontalBarChart';
 import SummaryStats from './SummaryStats';
 import JobFilter from './JobFilter';
+import { motion } from 'framer-motion';
+import { useMediaQuery } from 'react-responsive';
 
 const Dashboard = () => {
     // Retrieves the dispatch function to send actions to the redux store
@@ -30,6 +32,10 @@ const Dashboard = () => {
         setSelectedJobTitle(jobTitle);
     };
 
+    // For job title filter dropdown animation
+    const isMediumScreen = useMediaQuery({ query: '(max-width: 1180px)' });
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
     // Fetches data, Dispatches action, and updates state in redux store upon component mount (Updated state)
     useEffect(() => {
         // Ensures data fetching, action dispatch and state action effect happens again only if job title changes
@@ -41,7 +47,12 @@ const Dashboard = () => {
     // Renders and passes data as props to sub-components
     return (
         /* Dashboard container */
-        <div className=" mx-auto my-[5vh] flex flex-col w-[95%] min-h-[90vh] lg:min-h-[90vh] pt-8 pr-8 pl-8 lg:pl-0 glass-1">
+        <motion.div
+            initial={{ paddingBottom: 0 }}  
+            animate={{ paddingBottom: isMediumScreen && isDropdownOpen ? 220 : 0 }}  
+            transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            className="relative mx-auto my-[5vh] flex flex-col w-[95%] lg:min-h-[90vh] pt-8 pr-8 pl-8 lg:pl-0 glass-1"
+        >
             {/* Dashboard content */}
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 h-full">
                 {/* Left partition */}
@@ -50,12 +61,17 @@ const Dashboard = () => {
                         <img src="/logo.png" alt="Logo" className="h-20 w-auto py-2 pl-2" />
                     </div>
                     <div className='-mt-12 lg:-mt-5 pr-4 pl-6'>
-                        <JobFilter jobtitles={jobTitles} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} />
+                        <JobFilter jobtitles={jobTitles} selectedJob={selectedJobTitle} onChange={handleJobTitleChange} onToggle={setIsDropdownOpen}/>
                     </div>
                     <div className="absolute inset-y-0 -top-8 -right-2 border-r-[rgba(255,255,255,0.15)] lg:border-r-2"></div>
                 </div>
                 {/* Right partition */}
-                <div className="grid grid-rows-[auto,1fr,1fr] lg:col-span-4">
+                <motion.div
+                    initial={{ y: 0 }}
+                    animate={isMediumScreen && isDropdownOpen ? { y: 220 } : { y: 0 }}  
+                    transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}  
+                    className="grid grid-rows-[auto,1fr,1fr] lg:col-span-4"
+                >
                     <div className="">
                         <SummaryStats stats={data.summaryStats} />
                     </div>
@@ -73,9 +89,9 @@ const Dashboard = () => {
                             <HorizontalBarChart data={data.fields_of_study} selectedEducationLevel={selectedEducationLevel} selectedColor={selectedColor} />
                         </div>
                     </div>
-                </div> 
+                </motion.div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

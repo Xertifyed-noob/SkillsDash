@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const JobFilter = ({ jobtitles, selectedJob, onChange }) => {
+const JobFilter = ({ jobtitles, selectedJob, onChange, onToggle }) => {
     // State variable which determines whether the dropdown menu is open or closed
     const [isOpen, setIsOpen] = useState(false);
+    // State variable which determines whether the text in the dropdown list is shown or not
+    const [textVisible, setTextVisible] = useState(true);
 
     // Function to toggle the dropdown menu's open or closed state
     const handleToggle = () => {
         setIsOpen(!isOpen);
+        onToggle(!isOpen);
+        setTextVisible(!isOpen);
     }
 
     // Function to hanfdle job title selection from dropdown menu
     const handleSelect = (job) => {
         onChange(job);
         setIsOpen(false);
+        onToggle(false);
     };
 
     return (
@@ -35,31 +41,48 @@ const JobFilter = ({ jobtitles, selectedJob, onChange }) => {
                 </button>
             </div>
 
-            {isOpen && (
-                <div className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-xl glass-2">
-                    <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                        <div
-                        onClick={() => handleSelect('')}
-                        className="relative px-4 py-3 mx-2 my-1 text-gray-200 rounded-xl cursor-pointer select-none hover-highlight"
-                        role="menuitem"
-                        >
-                            <span className="block font-normal truncate">All</span>
-                        </div>
-                        {jobtitles.map((job, index) => (
-                            <div
-                                key={index}
-                                onClick={() => handleSelect(job)}
-                                className="relative px-4 py-3 mx-2 my-1 text-gray-200 rounded-xl cursor-pointer select-none hover-highlight"
-                                role="menuitem"
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0, scaleY: 0 }}
+                        animate={{ height: 'auto', opacity: 1, scaleY: 1 }}
+                        exit={{ height: 0, opacity: 0, scaleY: 0 }}
+                        transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                        style={{ transformOrigin: 'top' }}
+                        className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-xl glass-2"
+                    >   
+                        {textVisible && (
+                            <motion.div
+                                initial={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.1 }} 
                             >
-                                <span className={`block font-normal truncate ${job === selectedJob ? 'font-bold' : ''}`}>
-                                    {job}
-                                </span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
+                                <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                    <div
+                                    onClick={() => handleSelect('')}
+                                    className="relative px-4 py-3 mx-2 my-1 text-gray-200 rounded-xl cursor-pointer select-none hover-highlight"
+                                    role="menuitem"
+                                    >
+                                        <span className="block font-normal truncate">All</span>
+                                    </div>
+                                    {jobtitles.map((job, index) => (
+                                        <div
+                                            key={index}
+                                            onClick={() => handleSelect(job)}
+                                            className="relative px-4 py-3 mx-2 my-1 text-gray-200 rounded-xl cursor-pointer select-none hover-highlight"
+                                            role="menuitem"
+                                        >
+                                            <span className={`block font-normal truncate ${job === selectedJob ? 'font-bold' : ''}`}>
+                                                {job}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        )}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

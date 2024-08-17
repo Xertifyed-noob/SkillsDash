@@ -10,7 +10,7 @@ module.exports = {
       },
       screens: {
         'md': '900px',
-        'lg': '1100px',
+        'lg': '1180px',
         'h-md': { 'raw': '(min-height: 500px)' },
         'h-lg': { 'raw': '(min-height: 1000px)' },
       },
