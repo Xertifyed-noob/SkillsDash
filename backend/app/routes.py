@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, current_app
-from app.models import Skill, Tool
+from app.models import Industry, Skill, Tool
 from .data_analysis import aggregate_query, aggregate_data
 
 # Creates 'main' blueprint for organising routes
@@ -29,7 +29,7 @@ def get_skill_industry_counts():
     skill = skill_list[0] if skill_list else None
     job_title = request.args.get('job_title')
     # Return dataframe of all unique skill and industry counts
-    counts = aggregate_query(Skill, Skill.skill, job_title, Skill.industry)
+    counts = aggregate_query(Skill, Skill.skill, job_title, Industry.industry)
     # Filter dataframe to show only indsutry counts for the selected skill
     skill_industry_counts = counts[counts['skill'] == skill]
     return jsonify(skill_industry_counts.to_dict(orient='records'))
@@ -42,7 +42,7 @@ def get_tool_industry_counts():
     tool = tool_list[0] if tool_list else None
     job_title = request.args.get('job_title')
     # Return dataframe of all unique tool and industry counts
-    counts = aggregate_query(Tool, Tool.tool, job_title, Tool.industry)
+    counts = aggregate_query(Tool, Tool.tool, job_title, Industry.industry)
     # Filter dataframe to show only indsutry counts for the selected tool
     tool_industry_counts = counts[counts['tool'] == tool]
     return jsonify(tool_industry_counts.to_dict(orient='records'))

@@ -1,70 +1,28 @@
 import pandas as pd
 from app import db
-from app.models import Skill, Tool, EducationLevel, FieldOfStudy
+from app.models import Job, Industry, Skill, Tool, EducationLevel, FieldOfStudy
 
 # Function to aggregate a given column (skill, tool, education_level) of a MySQL table
 def aggregate_query(model, column, job_title=None, industry=None):
-    # Count the occurence of each unique item under the given column, and also the indsutry column if present 
-    query_columns = [column] + ([industry] if industry else []) + [db.func.count(column).label('count')]
+    # Count the occurence of each unique item under the given column
+    query_columns = [column] + ([Industry.industry] if industry else []) + [db.func.count(column).label('count')]
     query = db.session.query(*query_columns)
-    # Job title filtering
+    # Job title filtering 
     if job_title:
-        query = query.filter(model.job_title == job_title)
+        # Joins Job table using the job_id foreign key to obtain mapped job titles
+        query = query.join(Job, Job.id == model.job_id)
+        query = query.filter(Job.job_title == job_title)
     # Filter out rows where the industry is "Unknown" if industry column is present
     if industry:
-        query = query.filter(industry != "Unknown")
+         # Joins Industry table using the industry_id foreign key to obtain mapped industries
+        query = query.join(Industry, Industry.id == model.industry_id)
+        query = query.filter(Industry.industry != "Unknown")
     # Combine rows with the same item under the given column, or combine rows with the same items under both the given column and industry column if present
-    group_by_columns = [column] + ([industry] if industry else [])
+    group_by_columns = [column] + ([Industry.industry] if industry else [])
     query = query.group_by(*group_by_columns).all()
     # Construct the dataframe of aggregated columns
-    df_columns = [column.name] + ([industry.name] if industry else []) + ['count']
+    df_columns = [column.name] + ([Industry.industry.name] if industry else []) + ['count']
     return pd.DataFrame(query, columns=df_columns)
-
-
-# Function to further aggregate tool column to include the counts of their appearances alongside any of the top skills [Originally used for BubbleChart.js]
-def aggregate_tools(job_title=None, industry=None):
-    top_skills = get_top_skills()
-    # If industry column is present, aggregate both tool and industry column, else, aggregate only the tool column
-    if industry:
-        tool_counts = aggregate_query(Tool, Tool.tool, job_title, industry=Tool.industry)
-    else:
-        tool_counts = aggregate_query(Tool, Tool.tool, job_title)
-    tool_counts['co_appearance'] = 0
-
-    for tool in tool_counts['tool']:
-        # Use a set to track job IDs that have already been counted for this tool
-        counted_job_ids = set()
-        for skill in top_skills:
-            # Query to count the number of times the tool appears alongside the current skill (number of unique job IDs)
-            query = db.session.query(Tool.job_id).join(Skill, Skill.job_id == Tool.job_id).filter(Tool.tool == tool, Skill.skill == skill)
-            # Job title filtering
-            if job_title:
-                query = query.filter(Tool.job_title == job_title)
-            result = query.all()   
-            # Ensures that each job ID is counted only once
-            for row in result:
-                counted_job_ids.add(row[0])
-        # The size of the set is the number of unique job IDs where the tool co-appears with any of the top skills
-        tool_counts.loc[tool_counts['tool'] == tool, 'co_appearance'] = len(counted_job_ids)
-
-    return tool_counts
-
-
-# Function to query the top 3 skills from the Skill table in MySQL database [Originally used for BubbleChart.js]
-def get_top_skills(job_title=None, n=3):
-    # Base query to count the occurence of each unique skill
-    query = db.session.query(
-        Skill.skill,
-        db.func.count(Skill.skill).label('count')
-    ).group_by(Skill.skill)
-    # Job title filtering
-    if job_title:
-        query = query.filter(Skill.job_title == job_title)
-    # Sort in descending order and limit the query result to the top n skills with the most counts
-    top_skills_query = query.order_by(db.desc('count')).limit(n).all()
-    # Extract the skill names from the query result
-    top_skills = [skill[0] for skill in top_skills_query]
-    return top_skills
 
 
 # Function to aggregate the field of study column separately
@@ -78,7 +36,8 @@ def aggregate_field_of_study(job_title=None):
     ).join(FieldOfStudy, EducationLevel.id == FieldOfStudy.education_level_id) 
     # Job title filtering
     if job_title:
-        query = query.filter(FieldOfStudy.job_title == job_title)
+        query = query.join(Job, Job.id == FieldOfStudy.job_id)
+        query = query.filter(Job.job_title == job_title)
     # Groups the counts first by education level, and then field of study
     query = query.group_by(EducationLevel.education_level, FieldOfStudy.field_of_study).all()
     return pd.DataFrame(query, columns=['education_level', 'field_of_study', 'count'])
@@ -125,7 +84,7 @@ def aggregate_data(data, job_title=None):
         data = data[data['Job Title'] == job_title]
 
     skill_counts = aggregate_query(Skill, Skill.skill, job_title)
-    tool_counts = aggregate_tools(job_title)
+    tool_counts = aggregate_query(Tool, Tool.tool, job_title)
     education_level_counts = aggregate_query(EducationLevel, EducationLevel.education_level, job_title)
     field_of_study_counts = aggregate_field_of_study(job_title)
     summary_stats = calculate_summary_stats(data)

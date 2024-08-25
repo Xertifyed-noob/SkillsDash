@@ -1,7 +1,7 @@
 import pandas as pd
 from flask import current_app
 from app import db
-from app.models import Job, Skill, Tool, EducationLevel, FieldOfStudy
+from app.models import Job, Industry, Skill, Tool, EducationLevel, FieldOfStudy
 from .format_data import format_dataset
 from sqlalchemy.sql import text
 
@@ -11,17 +11,19 @@ def populate_db():
     data = current_app.config['DATA']
 
     # Format the dataset using function defined in format_data.py
-    jobs, skills, tools, education_level, field_of_study = format_dataset(data)
+    jobs, industries, skills, tools, education_level, field_of_study = format_dataset(data)
 
     # Clear existing data from MySQL tables (delete rows from dependent tables which has foreign keys first)
     db.session.query(FieldOfStudy).delete()
     db.session.query(Skill).delete()
     db.session.query(Tool).delete()
     db.session.query(EducationLevel).delete()
+    db.session.query(Industry).delete()
     db.session.query(Job).delete()
 
     # Reset index to start from 1 
     db.session.execute(text('ALTER TABLE job AUTO_INCREMENT = 1'))
+    db.session.execute(text('ALTER TABLE industry AUTO_INCREMENT = 1'))
     db.session.execute(text('ALTER TABLE skill AUTO_INCREMENT = 1'))
     db.session.execute(text('ALTER TABLE tool AUTO_INCREMENT = 1'))
     db.session.execute(text('ALTER TABLE education_level AUTO_INCREMENT = 1'))
@@ -30,6 +32,10 @@ def populate_db():
     # Insert jobs into the job table
     jobs_list = jobs.to_dict(orient='records')
     db.session.bulk_insert_mappings(Job, jobs_list)
+
+    # Insert industries into the industry table
+    industries_list = industries.to_dict(orient='records')
+    db.session.bulk_insert_mappings(Industry, industries_list)
 
     # Convert skills dataframe into dictionary and then insert them into MySQL table
     skills_list = skills.rename(columns={'skills': 'skill'}).to_dict(orient='records')
