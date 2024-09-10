@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+<h1 style="background-color: #9c8ffd; height:200px">
+    <img
+      src="./assets/Banner.png"
+      alt="SkillsDash"
+      style="width:100%; height:100%; object-fit: cover; transform: scale(0.45);"
+    />
+</h1>
+<hr style="border: 1px solid #;">
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center" style="margin-top: 30px">
+   A modern job skills dashboard 📊
+</p>
 
-## Available Scripts
+<div align="center">
+  <img src="https://img.shields.io/badge/Python%20version-3.9.6%2B-blue" alt="Python version">
+  <img src="https://img.shields.io/github/last-commit/Xertifyed-noob/SkillsDash?color=purple" alt="GitHub last commit">
+  <img src="https://img.shields.io/github/repo-size/Xertifyed-noob/SkillsDash?color=orange" alt="GitHub repo size">
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="License">
+  <img src="https://img.shields.io/github/languages/count/Xertifyed-noob/SkillsDash?color=red" alt="Languages count">
+</div>
 
-In the project directory, you can run:
+##
+<div style="text-align: center; padding: 20px;">
+  <img src="./assets/Awesome-Image.png" alt="SkillsDash Screenshot" style="border-radius: 15px; width: 90%;">
+</div>
 
-### `npm start`
+## 💡 Motivation
+A simple dashboard to provide quick insights into the most sought after skills and software tools for data science related roles in Singapore. Many hiring portals often list a multidude of job requirements which can overwhelm job seekers, so it would be valuable to summarise all the key requirements across numerous job postings. This intuitive design hopes to provide an immediate overview of job requirements so that job seekers would know which skills and tools to focus on.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🛠️ Built With
+### Backend
+[![Python][Python]][Python-url] [![Flask][Flask]][Flask-url] [![MySQL][MySQL]][MySQL-url]
 
-### `npm test`
+### Frontend
+[![React][React.js]][React-url] [![Chart.js][Chart.js]][Chart-url] [![TailwindCSS][TailwindCSS]][Tailwind-url]
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 📊 Data pipeline
+![Data Pipeline](./assets/DataPipeline.gif)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🚀 Usage
+COMING SOON!
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[Python]: https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54
+[Python-url]: https://www.python.org/
+[Flask]: https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white
+[Flask-url]: https://flask.palletsprojects.com/
+[MySQL]: https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white
+[MySQL-url]: https://www.mysql.com/
+[React.js]: https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB
+[React-url]: https://reactjs.org/
+[Chart.js]: https://img.shields.io/badge/chart.js-F5788D.svg?style=for-the-badge&logo=chart.js&logoColor=white
+[Chart-url]: https://www.chartjs.org/
+[TailwindCSS]: https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white
+[Tailwind-url]: https://tailwindcss.com/
