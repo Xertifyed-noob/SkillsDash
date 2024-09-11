@@ -1,11 +1,4 @@
-<h1 style="background-color: #9c8ffd; height:200px">
-    <img
-      src="./assets/Banner.png"
-      alt="SkillsDash"
-      style="width:100%; height:100%; object-fit: cover; transform: scale(0.45);"
-    />
-</h1>
-<hr style="border: 1px solid #;">
+![Logo Banner](./assets/Banner.png)
 
 <p align="center" style="margin-top: 30px">
    A modern job skills dashboard 📊
@@ -20,12 +13,28 @@
 </div>
 
 ##
-<div style="text-align: center; padding: 20px;">
-  <img src="./assets/Awesome-Image.png" alt="SkillsDash Screenshot" style="border-radius: 15px; width: 90%;">
-</div>
+<p align="center">
+  <img src="./assets/Awesome-Image.png" alt="SkillsDash Screenshot" width="90%">
+</p>
 
-## 💡 Motivation
-A simple dashboard to provide quick insights into the most sought after skills and software tools for data science related roles in Singapore. Many hiring portals often list a multidude of job requirements which can overwhelm job seekers, so it would be valuable to summarise all the key requirements across numerous job postings. This intuitive design hopes to provide an immediate overview of job requirements so that job seekers would know which skills and tools to focus on.
+## 👀 Overview
+A simple dashboard designed to offer a quick, data-driven overview of the most sought-after skills in data science roles across Singapore. By combining data analysis technologies with modern web development, this application helps job seekers identify crucial skills and qualifications through clear, interactive visualizations.
+
+
+## ❗Problem Statement
+In today's fast-paced job market, candidates often face an overwhelming flood of job requirements scattered across various hiring platforms. This makes it difficult to discern which skills and qualifications truly matter.
+
+*Sources:* [Career.com](https://www.career.com/career-advice/how-to-reduce-job-search-anxiety-and-avoid-being-overwhelmed), [themuse.com](https://www.themuse.com/advice/18-different-ways-to-rebound-when-your-job-search-is-wearing-you-down)
+
+SkillsDash simplifies this process by aggregating and visualizing key job requirements from multiple hiring platforms into a single platform. By highlighting the most in-demand skills and qualifications, it empowers job seekers to make informed decisions efficiently, stay competitive, and focus on the areas that enhance their employability.
+
+
+## 🔬 Analytical Methods
+- Data Cleaning and Transformation
+- Data Visualisation
+- Exploratory Data Analysis
+- Multivariate Correlation
+- Natural Language Processing (To be implemented)
 
 
 ## 🛠️ Built With
@@ -43,7 +52,6 @@ A simple dashboard to provide quick insights into the most sought after skills a
 
 ## 🚀 Usage
 COMING SOON!
-
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
